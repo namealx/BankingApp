@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import Combine
 
 // MARK: - SettingsManager
 final class SettingsManager: ObservableObject {
@@ -18,6 +19,9 @@ final class SettingsManager: ObservableObject {
     // MARK: - Published Properties
     @Published var colorScheme: ColorSchemePreference = .system
     @Published var language: AppLanguage = .russian
+    
+    // MARK: - Current User Session
+    @Published var currentUserId: Int64?
     
     // MARK: - Computed Properties
     var swiftUIColorScheme: ColorScheme? {
@@ -30,7 +34,11 @@ final class SettingsManager: ObservableObject {
     
     // MARK: - Methods
     func logout() {
-        
+        currentUserId = nil
+    }
+    
+    func saveUserSession(userId: Int64) {
+        currentUserId = userId
     }
 }
 
@@ -65,4 +73,3 @@ enum AppLanguage: String, CaseIterable {
     
     var locale: String { rawValue }
 }
-

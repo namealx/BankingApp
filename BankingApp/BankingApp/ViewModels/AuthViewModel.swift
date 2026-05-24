@@ -2,7 +2,7 @@
 //  AuthViewModel.swift
 //  BankingApp
 //
-//  Created by Nikita Yuranov on 13.05.2026
+//  Created by Nikita Yuranov on 22.05.2026
 //  Group: 12b
 //
 
@@ -36,6 +36,8 @@ final class AuthViewModel: ObservableObject {
         if login == "demo" && password == "demo123" {
             isLoggedIn = true
             errorMessage = ""
+            // Сохраняем сессию
+            settings.saveUserSession(userId: 1)
         } else {
             errorMessage = "Неверный логин или пароль"
         }
@@ -58,9 +60,11 @@ final class AuthViewModel: ObservableObject {
             return
         }
         
-        
+        // Временная заглушка для демо-регистрации
         isLoggedIn = true
         errorMessage = ""
+        // Сохраняем сессию
+        settings.saveUserSession(userId: 1)
     }
     
     // MARK: - Logout
@@ -70,6 +74,10 @@ final class AuthViewModel: ObservableObject {
         isLoggedIn = false
         login = ""
         password = ""
+        fullName = ""
+        email = ""
+        phone = ""
+        confirmPassword = ""
     }
     
     // MARK: - Reset Form

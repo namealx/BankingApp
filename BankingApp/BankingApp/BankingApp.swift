@@ -1,5 +1,5 @@
 //
-//  BankingAppApp.swift
+//  BankingApp.swift
 //  BankingApp
 //
 //  Created by Nikita Yuranov on 22.05.2026
@@ -23,3 +23,4 @@ struct BankingApp: App {
         }
     }
 }
+

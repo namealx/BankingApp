@@ -29,9 +29,28 @@
 		8488A9DB2FC239850048A831 /* BankingAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BankingAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		8488AA262FC2C8080048A831 /* Exceptions for "BankingApp" folder in "BankingApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"/Localized: Resources/.gitkeep",
+				Info.plist,
+				Views/Accounts/.gitkeep,
+				Views/Currency/.gitkeep,
+				Views/Map/.gitkeep,
+				Views/Profile/.gitkeep,
+				Views/Transfer/.gitkeep,
+			);
+			target = 8488A9C32FC239820048A831 /* BankingApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		8488A9C62FC239820048A831 /* BankingApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				8488AA262FC2C8080048A831 /* Exceptions for "BankingApp" folder in "BankingApp" target */,
+			);
 			path = BankingApp;
 			sourceTree = "<group>";
 		};
