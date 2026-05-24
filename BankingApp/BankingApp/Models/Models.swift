@@ -57,7 +57,7 @@ enum CardSubtype: String, CaseIterable, Codable {
 }
 
 // MARK: - Account Model
-struct Account: Identifiable, Codable {
+struct Account: Identifiable, Codable, Hashable {
     let id: Int64
     let userId: Int64
     var name: String
@@ -90,6 +90,15 @@ struct Account: Identifiable, Codable {
 
     var availableBalance: Double {
         hasOverdraft ? balance + overdraftLimit : balance
+    }
+    
+    // MARK: - Hashable
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: Account, rhs: Account) -> Bool {
+        lhs.id == rhs.id
     }
 }
 
