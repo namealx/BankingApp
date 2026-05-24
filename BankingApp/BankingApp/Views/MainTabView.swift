@@ -19,6 +19,8 @@ struct MainTabView: View {
     @StateObject private var branchVM = BranchViewModel()
     @StateObject private var profileVM = ProfileViewModel()
     
+    @State private var accountsRefreshID = UUID()
+    
     var body: some View {
         TabView {
             AccountsView()
@@ -58,6 +60,16 @@ struct MainTabView: View {
                 profileVM.loadUser(id: userId)
                 currencyVM.loadRates()
                 branchVM.loadBranches()
+            }
+        }
+        .onReceive(transferVM.$isTransferComplete) { completed in
+            if completed {
+                if let userId = authVM.currentUser?.id {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        accountsVM.loadAccounts(userId: userId)
+                        accountsRefreshID = UUID()
+                    }
+                }
             }
         }
     }
