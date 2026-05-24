@@ -56,6 +56,7 @@ struct MainTabView: View {
             
             ProfileView()
                 .environmentObject(profileVM)
+                .environmentObject(authVM)
                 .tabItem {
                     Label("Профиль", systemImage: "person.circle")
                 }
