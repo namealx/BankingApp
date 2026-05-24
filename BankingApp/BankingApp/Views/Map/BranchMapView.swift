@@ -9,19 +9,18 @@
 import SwiftUI
 import MapKit
 
-// MARK: - BranchMapView
 struct BranchMapView: View {
     
     @EnvironmentObject var branchVM: BranchViewModel
     @State private var showList = false
+    @State private var userTrackingMode: MapUserTrackingMode = .follow
     
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
-                // MARK: Map
                 Map(coordinateRegion: $branchVM.mapRegion,
                     showsUserLocation: true,
-                    userTrackingMode: .constant(.follow),
+                    userTrackingMode: $userTrackingMode,
                     annotationItems: branchVM.filteredBranches) { branch in
                     MapAnnotation(coordinate: CLLocationCoordinate2D(
                         latitude: branch.latitude,
@@ -34,6 +33,7 @@ struct BranchMapView: View {
                         .onTapGesture {
                             withAnimation {
                                 branchVM.selectedBranch = branch
+                                userTrackingMode = .none
                             }
                         }
                     }
@@ -41,9 +41,9 @@ struct BranchMapView: View {
                 .ignoresSafeArea(edges: .top)
                 .onAppear {
                     branchVM.loadBranches()
+                    branchVM.requestLocationPermission()
                 }
                 
-                // MARK: Selected Branch Card
                 if let branch = branchVM.selectedBranch {
                     BranchCardView(branch: branch) {
                         branchVM.openInMaps(branch)
@@ -54,17 +54,17 @@ struct BranchMapView: View {
             }
             .navigationTitle("Отделения")
             .toolbar {
-                // List Button
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showList = true }) {
                         Image(systemName: "list.bullet")
                     }
-                    .accessibilityIdentifier("branchListButton")
                 }
                 
-                // Location Button
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: { branchVM.centerMapOnUser() }) {
+                    Button(action: {
+                        userTrackingMode = .follow
+                        branchVM.centerMapOnUser()
+                    }) {
                         Image(systemName: "location.fill")
                     }
                 }
@@ -73,7 +73,7 @@ struct BranchMapView: View {
                 BranchListView()
                     .environmentObject(branchVM)
             }
-            .alert("Ошибка", isPresented: .constant(!branchVM.errorMessage.isEmpty)) {
+            .alert("Ошибка геолокации", isPresented: .constant(!branchVM.errorMessage.isEmpty)) {
                 Button("OK") { branchVM.errorMessage = "" }
             } message: {
                 Text(branchVM.errorMessage)
@@ -84,7 +84,6 @@ struct BranchMapView: View {
 
 // MARK: - BranchAnnotationView
 struct BranchAnnotationView: View {
-    
     let branch: Branch
     let isNearest: Bool
     let isSelected: Bool
@@ -94,10 +93,11 @@ struct BranchAnnotationView: View {
             ZStack {
                 Circle()
                     .fill(annotationColor)
-                    .frame(width: 36, height: 36)
+                    .frame(width: isNearest ? 42 : 36, height: isNearest ? 42 : 36)
+                    .shadow(color: isNearest ? .orange.opacity(0.6) : .clear, radius: 6)
                 Image(systemName: "building.columns")
                     .foregroundColor(.white)
-                    .font(.system(size: 16))
+                    .font(.system(size: isNearest ? 18 : 16, weight: isNearest ? .bold : .regular))
             }
             Image(systemName: "arrowtriangle.down.fill")
                 .font(.caption)
@@ -105,7 +105,7 @@ struct BranchAnnotationView: View {
                 .offset(y: -4)
         }
         .scaleEffect(isSelected ? 1.3 : 1.0)
-        .animation(.spring(), value: isSelected)
+        .animation(.spring(response: 0.3), value: isSelected)
     }
     
     private var annotationColor: Color {
@@ -117,43 +117,30 @@ struct BranchAnnotationView: View {
 
 // MARK: - BranchCardView
 struct BranchCardView: View {
-    
     let branch: Branch
     let onRoute: () -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // Header
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(branch.name)
-                        .font(.headline)
-                    Text(branch.address)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                    Text(branch.name).font(.headline)
+                    Text(branch.address).font(.caption).foregroundColor(.secondary)
                 }
                 Spacer()
                 HStack(spacing: 2) {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
-                        .font(.caption)
+                    Image(systemName: "star.fill").foregroundColor(.yellow)
                     Text(String(format: "%.1f", branch.rating))
-                        .font(.caption)
-                        .fontWeight(.semibold)
                 }
             }
             
-            // Working Hours & Phone
             HStack {
-                Label(branch.workingHours, systemImage: "clock")
-                    .font(.caption)
+                Label(branch.workingHours, systemImage: "clock").font(.caption)
                 Spacer()
-                Label(branch.phone, systemImage: "phone")
-                    .font(.caption)
+                Label(branch.phone, systemImage: "phone").font(.caption)
             }
             .foregroundColor(.secondary)
             
-            // Services
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(branch.services, id: \.self) { service in
@@ -168,7 +155,6 @@ struct BranchCardView: View {
                 }
             }
             
-            // Route Button
             Button(action: onRoute) {
                 Label("Проложить маршрут", systemImage: "arrow.triangle.turn.up.right.circle")
                     .frame(maxWidth: .infinity)
@@ -177,7 +163,6 @@ struct BranchCardView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
-            .accessibilityIdentifier("buildRouteButton")
         }
         .padding()
         .background(.ultraThinMaterial)
@@ -188,42 +173,21 @@ struct BranchCardView: View {
 
 // MARK: - BranchListView
 struct BranchListView: View {
-    
     @EnvironmentObject var branchVM: BranchViewModel
     @Environment(\.dismiss) var dismiss
-    
-    private func distanceString(for branch: Branch) -> String {
-        
-        let hasValidLocation = branchVM.userLocation.latitude != 0 && branchVM.userLocation.longitude != 0
-        
-        if hasValidLocation {
-            let userCL = CLLocation(latitude: branchVM.userLocation.latitude, longitude: branchVM.userLocation.longitude)
-            let branchCL = CLLocation(latitude: branch.latitude, longitude: branch.longitude)
-            let distance = userCL.distance(from: branchCL)
-            
-            if distance < 1000 {
-                return "\(Int(distance)) м"
-            } else {
-                return String(format: "%.1f км", distance / 1000)
-            }
-        } else {
-            return "—"
-        }
-    }
     
     var body: some View {
         NavigationStack {
             List(branchVM.filteredBranches) { branch in
-                Button(action: {
+                Button {
                     withAnimation {
                         branchVM.centerMap(on: branch)
                     }
                     dismiss()
-                }) {
+                } label: {
                     VStack(alignment: .leading, spacing: 4) {
                         HStack {
-                            Text(branch.name)
-                                .font(.headline)
+                            Text(branch.name).font(.headline)
                             Spacer()
                             if branchVM.nearestBranch?.id == branch.id {
                                 Text("Ближайшее")
@@ -235,26 +199,12 @@ struct BranchListView: View {
                                     .cornerRadius(4)
                             }
                         }
-                        Text(branch.address)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                        HStack {
-                            Label(branch.workingHours, systemImage: "clock")
-                                .font(.caption)
-                            Spacer()
-                            Text(distanceString(for: branch))
-                                .font(.caption)
-                                .foregroundColor(.blue)
-                        }
-                        .foregroundColor(.secondary)
+                        Text(branch.address).font(.caption).foregroundColor(.secondary)
                     }
                 }
-                .foregroundColor(.primary)
-                .accessibilityIdentifier("branchRow_\(branch.id)")
             }
             .searchable(text: $branchVM.searchText, prompt: "Поиск отделений...")
             .navigationTitle("Отделения")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Закрыть") { dismiss() }
@@ -262,9 +212,4 @@ struct BranchListView: View {
             }
         }
     }
-}
-
-#Preview {
-    BranchMapView()
-        .environmentObject(BranchViewModel())
 }

@@ -433,6 +433,9 @@
 				DEVELOPMENT_TEAM = 42822USZ56;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "BankingApp uses your location to find the nearest branch";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "BankingApp accesses your photos to set a profile avatar";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -465,6 +468,9 @@
 				DEVELOPMENT_TEAM = 42822USZ56;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "BankingApp uses your location to find the nearest branch";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "BankingApp accesses your photos to set a profile avatar";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
