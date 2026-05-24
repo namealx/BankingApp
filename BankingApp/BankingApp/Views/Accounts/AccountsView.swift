@@ -178,3 +178,256 @@ struct AccountRowView: View {
         }
     }
 }
+
+// MARK: - AccountDetailView
+struct AccountDetailView: View {
+    
+    @State private var currentAccount: Account
+    @EnvironmentObject var accountsVM: AccountsViewModel
+    @EnvironmentObject var authVM: AuthViewModel
+    @Environment(\.dismiss) var dismiss
+    
+    @State private var selectedFilter: TransactionType? = nil
+    @State private var showDeleteSheet = false
+    
+    init(account: Account) {
+        _currentAccount = State(initialValue: account)
+    }
+    
+    var body: some View {
+        List {
+            // MARK: Balance Section
+            Section {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Баланс")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(String(format: "%.2f %@", currentAccount.balance, currentAccount.currency))
+                        .font(.title.bold())
+                    if currentAccount.hasOverdraft {
+                        Text("Доступно с овердрафтом: \(String(format: "%.2f", currentAccount.availableBalance)) \(currentAccount.currency)")
+                            .font(.caption)
+                            .foregroundColor(.orange)
+                    }
+                }
+                .padding(.vertical, 8)
+            }
+            
+            // MARK: Actions Section
+            if currentAccount.isActive {
+                Section("Действия") {
+                    NavigationLink(destination: TransferView()
+                        .environmentObject(accountsVM)
+                        .environmentObject(authVM)) {
+                        Label("Перевести средства", systemImage: "arrow.right.circle")
+                    }
+                    
+                    Button(role: .destructive) {
+                        showDeleteSheet = true
+                    } label: {
+                        Label("Закрыть счет", systemImage: "trash")
+                    }
+                }
+            }
+            
+            // MARK: Status Section
+            Section("Информация") {
+                HStack {
+                    Text("Номер счета")
+                    Spacer()
+                    Text("\(currentAccount.id)")
+                        .foregroundColor(.secondary)
+                }
+                
+                HStack {
+                    Text("Тип счета")
+                    Spacer()
+                    Text(currentAccount.type.localizedName)
+                        .foregroundColor(.secondary)
+                }
+                
+                HStack {
+                    Text("Статус")
+                    Spacer()
+                    Text(currentAccount.isActive ? "Активен" : "Закрыт")
+                        .foregroundColor(currentAccount.isActive ? .green : .red)
+                }
+                
+                HStack {
+                    Text("Дата открытия")
+                    Spacer()
+                    Text(currentAccount.createdAt.formatted(date: .abbreviated, time: .omitted))
+                        .foregroundColor(.secondary)
+                }
+            }
+            
+            // MARK: Filter Section
+            Section {
+                Picker("Фильтр", selection: $selectedFilter) {
+                    Text("Все").tag(Optional<TransactionType>.none)
+                    ForEach(TransactionType.allCases, id: \.self) { type in
+                        Text(type.localizedName).tag(Optional(type))
+                    }
+                }
+                .pickerStyle(.segmented)
+                .onChange(of: selectedFilter) { _, newValue in
+                    accountsVM.setFilter(newValue)
+                }
+            }
+            
+            // MARK: Transactions Section
+            Section("История операций") {
+                if accountsVM.filteredTransactions.isEmpty {
+                    Text("Нет операций")
+                        .foregroundColor(.gray)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding()
+                } else {
+                    ForEach(accountsVM.filteredTransactions) { transaction in
+                        TransactionRowView(transaction: transaction)
+                    }
+                }
+            }
+        }
+        .navigationTitle(currentAccount.name)
+        .onAppear {
+            accountsVM.loadTransactions(for: currentAccount)
+        }
+        .onChange(of: accountsVM.accounts) { _, updatedAccounts in
+            if let fresh = updatedAccounts.first(where: { $0.id == currentAccount.id }) {
+                currentAccount = fresh
+            }
+        }
+        .sheet(isPresented: $showDeleteSheet) {
+            DeleteAccountSheet(account: currentAccount) {
+                if let userId = authVM.currentUser?.id {
+                    accountsVM.loadAccounts(userId: userId)
+                }
+                dismiss()
+            }
+            .environmentObject(accountsVM)
+        }
+    }
+}
+
+// MARK: - TransactionRowView
+struct TransactionRowView: View {
+    
+    let transaction: Transaction
+    
+    var body: some View {
+        HStack {
+            Image(systemName: iconName)
+                .foregroundColor(iconColor)
+                .frame(width: 32, height: 32)
+                .background(iconColor.opacity(0.15))
+                .cornerRadius(8)
+            
+            VStack(alignment: .leading, spacing: 2) {
+                Text(transaction.description)
+                    .font(.subheadline)
+                Text(transaction.createdAt, style: .date)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            
+            Spacer()
+            
+            Text(String(format: "%@%.2f %@", prefix, transaction.amount, transaction.currency))
+                .font(.headline)
+                .foregroundColor(iconColor)
+        }
+        .padding(.vertical, 2)
+    }
+    
+    private var iconName: String {
+        switch transaction.type {
+        case .income: return "arrow.down.circle"
+        case .expense: return "arrow.up.circle"
+        case .transfer: return "arrow.left.arrow.right.circle"
+        }
+    }
+    
+    private var iconColor: Color {
+        switch transaction.type {
+        case .income: return .green
+        case .expense: return .red
+        case .transfer: return .blue
+        }
+    }
+    
+    private var prefix: String {
+        switch transaction.type {
+        case .income: return "+"
+        case .expense: return "-"
+        case .transfer: return ""
+        }
+    }
+}
+
+// MARK: - CreateAccountSheet
+struct CreateAccountSheet: View {
+    
+    @EnvironmentObject var accountsVM: AccountsViewModel
+    @EnvironmentObject var authVM: AuthViewModel
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("Информация о счете") {
+                    TextField("Название счета", text: $accountsVM.newAccountName)
+                        .accessibilityIdentifier("newAccountNameField")
+                    
+                    Picker("Тип счета", selection: $accountsVM.newAccountType) {
+                        ForEach(AccountType.allCases, id: \.self) { type in
+                            Text(type.localizedName).tag(type)
+                        }
+                    }
+                    
+                    if accountsVM.newAccountType == .card {
+                        Picker("Тип карты", selection: $accountsVM.newCardSubtype) {
+                            ForEach(CardSubtype.allCases, id: \.self) { subtype in
+                                Text(subtype.rawValue.capitalized).tag(subtype)
+                            }
+                        }
+                    }
+                    
+                    Picker("Валюта", selection: $accountsVM.newAccountCurrency) {
+                        ForEach(["BYN", "USD", "EUR", "RUB"], id: \.self) { currency in
+                            Text(currency).tag(currency)
+                        }
+                    }
+                }
+                
+                if !accountsVM.errorMessage.isEmpty {
+                    Section {
+                        Text(accountsVM.errorMessage)
+                            .foregroundColor(.red)
+                    }
+                }
+                
+                Section {
+                    Button("Создать счет") {
+                        if let userId = authVM.currentUser?.id {
+                            accountsVM.createAccount(userId: userId)
+                            if accountsVM.errorMessage.isEmpty {
+                                dismiss()
+                            }
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .disabled(accountsVM.isLoading)
+                    .accessibilityIdentifier("createAccountConfirmButton")
+                }
+            }
+            .navigationTitle("Новый счет")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Отмена") { dismiss() }
+                }
+            }
+        }
+    }
+}
