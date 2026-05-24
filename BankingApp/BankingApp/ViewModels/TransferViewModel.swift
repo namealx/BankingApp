@@ -21,13 +21,16 @@ final class TransferViewModel: ObservableObject {
     @Published var isTransferComplete: Bool = false
     @Published var isProcessing: Bool = false
     
+    // MARK: - Callbacks
+    var onTransferSuccess: (() -> Void)?
+    
     // MARK: - Computed Properties
     var amount: Double { Double(amountString.replacingOccurrences(of: ",", with: ".")) ?? 0 }
     
     // MARK: - Dependencies
     private let db = DatabaseManager.shared
     
-    // MARK: - Currency Rates 
+    // MARK: - Currency Rates
     private func rateToBYN(_ currency: String) -> Double {
         let rates: [String: Double] = [
             "BYN": 1.0,
@@ -92,6 +95,7 @@ final class TransferViewModel: ObservableObject {
                     self.successMessage = String(format: "Успешно переведено %.2f %@ на счет %@", self.amount, from.currency, to.name)
                     self.isTransferComplete = true
                     self.isProcessing = false
+                    self.onTransferSuccess?()
                 }
                 
             } catch {
