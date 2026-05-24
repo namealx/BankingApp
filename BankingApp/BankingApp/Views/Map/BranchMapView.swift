@@ -193,17 +193,21 @@ struct BranchListView: View {
     @Environment(\.dismiss) var dismiss
     
     private func distanceString(for branch: Branch) -> String {
-        guard let userLocation = branchVM.userLocation else {
-            return "—"
-        }
-        let userCL = CLLocation(latitude: userLocation.latitude, longitude: userLocation.longitude)
-        let branchCL = CLLocation(latitude: branch.latitude, longitude: branch.longitude)
-        let distance = userCL.distance(from: branchCL)
         
-        if distance < 1000 {
-            return "\(Int(distance)) м"
+        let hasValidLocation = branchVM.userLocation.latitude != 0 && branchVM.userLocation.longitude != 0
+        
+        if hasValidLocation {
+            let userCL = CLLocation(latitude: branchVM.userLocation.latitude, longitude: branchVM.userLocation.longitude)
+            let branchCL = CLLocation(latitude: branch.latitude, longitude: branch.longitude)
+            let distance = userCL.distance(from: branchCL)
+            
+            if distance < 1000 {
+                return "\(Int(distance)) м"
+            } else {
+                return String(format: "%.1f км", distance / 1000)
+            }
         } else {
-            return String(format: "%.1f км", distance / 1000)
+            return "—"
         }
     }
     
@@ -211,7 +215,9 @@ struct BranchListView: View {
         NavigationStack {
             List(branchVM.filteredBranches) { branch in
                 Button(action: {
-                    branchVM.centerMap(on: branch)
+                    withAnimation {
+                        branchVM.centerMap(on: branch)
+                    }
                     dismiss()
                 }) {
                     VStack(alignment: .leading, spacing: 4) {
