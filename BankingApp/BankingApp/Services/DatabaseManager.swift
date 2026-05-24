@@ -145,7 +145,106 @@ final class DatabaseManager {
     
     // MARK: - Insert Demo Data
     private func insertDemoDataIfNeeded() {
-        
+        guard let db = db else { return }
+        do {
+            let count = try db.scalar(usersTable.count)
+            guard count == 0 else { return }
+            
+            // Demo user
+            let userId = try db.run(usersTable.insert(
+                colFullName <- "Demo User",
+                colEmail <- "demo@bank.com",
+                colPhone <- "+375291234567",
+                colLogin <- "demo",
+                colPassword <- "demo123",
+                colAvatarData <- nil,
+                colCreatedAt <- Date().timeIntervalSince1970
+            ))
+            
+            // Demo accounts
+            let acc1 = try db.run(accountsTable.insert(
+                colUserId <- userId,
+                colName <- "Current Account",
+                colType <- AccountType.current.rawValue,
+                colCardSubtype <- nil,
+                colBalance <- 1250.50,
+                colCurrency <- "BYN",
+                colIsActive <- true,
+                colHasOverdraft <- false,
+                colOverdraftLimit <- 0.0,
+                colAccountCreatedAt <- Date().timeIntervalSince1970
+            ))
+            
+            let acc2 = try db.run(accountsTable.insert(
+                colUserId <- userId,
+                colName <- "Savings Account",
+                colType <- AccountType.savings.rawValue,
+                colCardSubtype <- nil,
+                colBalance <- 5000.0,
+                colCurrency <- "BYN",
+                colIsActive <- true,
+                colHasOverdraft <- false,
+                colOverdraftLimit <- 0.0,
+                colAccountCreatedAt <- Date().timeIntervalSince1970
+            ))
+            
+            let acc3 = try db.run(accountsTable.insert(
+                colUserId <- userId,
+                colName <- "USD Account",
+                colType <- AccountType.current.rawValue,
+                colCardSubtype <- nil,
+                colBalance <- 300.0,
+                colCurrency <- "USD",
+                colIsActive <- true,
+                colHasOverdraft <- false,
+                colOverdraftLimit <- 0.0,
+                colAccountCreatedAt <- Date().timeIntervalSince1970
+            ))
+            
+            // Demo transactions
+            let txData: [(Int64, String, Double, String, String)] = [
+                (acc1, TransactionType.income.rawValue, 500.0, "BYN", "Salary"),
+                (acc1, TransactionType.expense.rawValue, 120.50, "BYN", "Grocery"),
+                (acc1, TransactionType.expense.rawValue, 45.0, "BYN", "Internet"),
+                (acc2, TransactionType.income.rawValue, 1000.0, "BYN", "Transfer"),
+                (acc2, TransactionType.income.rawValue, 4000.0, "BYN", "Savings deposit")
+            ]
+            for tx in txData {
+                try db.run(transactionsTable.insert(
+                    colAccountId <- tx.0,
+                    colTxType <- tx.1,
+                    colAmount <- tx.2,
+                    colTxCurrency <- tx.3,
+                    colDescription <- tx.4,
+                    colRelatedAccountId <- nil,
+                    colTxCreatedAt <- Date().timeIntervalSince1970
+                ))
+            }
+            
+            // Demo branches
+            let branches: [(String, String, String, Double, Double, String, Double, String)] = [
+                ("BankingApp Central", "вул. Леніна, 15, Мінск", "+375172001001", 53.9045, 27.5615, "09:00–18:00", 4.8, "ATM,Loans,Deposits,Currency"),
+                ("BankingApp Niamiha", "вул. Нямiга, 8, Мінск", "+375172001002", 53.9102, 27.5489, "08:30–20:00", 4.6, "ATM,Loans,Cards"),
+                ("BankingApp Kastrychnickaja", "пр. Незалежнасцi, 42, Мінск", "+375172001003", 53.8978, 27.5500, "09:00–17:00", 4.5, "ATM,Currency,Deposits"),
+                ("BankingApp Partyzanski", "пр. Партызанскi, 70, Мінск", "+375172001004", 53.8850, 27.5900, "10:00–19:00", 4.3, "ATM,Loans")
+            ]
+            for b in branches {
+                try db.run(branchesTable.insert(
+                    colBranchName <- b.0,
+                    colAddress <- b.1,
+                    colPhoneNum <- b.2,
+                    colLatitude <- b.3,
+                    colLongitude <- b.4,
+                    colWorkingHours <- b.5,
+                    colRating <- b.6,
+                    colServices <- b.7
+                ))
+            }
+            
+            print("✅ Demo data inserted successfully")
+        } catch {
+            print("DatabaseManager: insertDemoData error \(error)")
+        }
     }
 }
 
