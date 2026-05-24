@@ -314,6 +314,58 @@ final class DatabaseManager {
             createdAt: Date(timeIntervalSince1970: row[colCreatedAt])
         )
     }
+    
+    // MARK: - Account CRUD Operations
+    
+    func getAccounts(userId: Int64) throws -> [Account] {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        let query = accountsTable.filter(colUserId == userId && colIsActive == true)
+        return try db.prepare(query).map { accountFromRow($0) }
+    }
+    
+    func createAccount(_ account: Account) throws -> Int64 {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        return try db.run(accountsTable.insert(
+            colUserId <- account.userId,
+            colName <- account.name,
+            colType <- account.type.rawValue,
+            colCardSubtype <- account.cardSubtype?.rawValue,
+            colBalance <- account.balance,
+            colCurrency <- account.currency,
+            colIsActive <- account.isActive,
+            colHasOverdraft <- account.hasOverdraft,
+            colOverdraftLimit <- account.overdraftLimit,
+            colAccountCreatedAt <- account.createdAt.timeIntervalSince1970
+        ))
+    }
+    
+    func updateAccountBalance(id: Int64, balance: Double) throws {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        let query = accountsTable.filter(colId == id)
+        try db.run(query.update(colBalance <- balance))
+    }
+    
+    func setAccountInactive(id: Int64) throws {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        let query = accountsTable.filter(colId == id)
+        try db.run(query.update(colIsActive <- false))
+    }
+    
+    private func accountFromRow(_ row: Row) -> Account {
+        Account(
+            id: row[colId],
+            userId: row[colUserId],
+            name: row[colName],
+            type: AccountType(rawValue: row[colType]) ?? .current,
+            cardSubtype: row[colCardSubtype].flatMap { CardSubtype(rawValue: $0) },
+            balance: row[colBalance],
+            currency: row[colCurrency],
+            isActive: row[colIsActive],
+            hasOverdraft: row[colHasOverdraft],
+            overdraftLimit: row[colOverdraftLimit],
+            createdAt: Date(timeIntervalSince1970: row[colAccountCreatedAt])
+        )
+    }
 }
 
 // MARK: - Database Error
