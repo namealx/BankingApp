@@ -298,7 +298,7 @@ struct AccountDetailView: View {
                 currentAccount = fresh
             }
         }
-        .sheet(isPresented: $showDeleteSheet) {
+        /*.sheet(isPresented: $showDeleteSheet) {
             DeleteAccountSheet(account: currentAccount) {
                 if let userId = authVM.currentUser?.id {
                     accountsVM.loadAccounts(userId: userId)
@@ -306,7 +306,7 @@ struct AccountDetailView: View {
                 dismiss()
             }
             .environmentObject(accountsVM)
-        }
+        }*/
     }
 }
 
