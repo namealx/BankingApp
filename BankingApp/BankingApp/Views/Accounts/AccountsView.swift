@@ -293,7 +293,7 @@ struct AccountDetailView: View {
         .onAppear {
             accountsVM.loadTransactions(for: currentAccount)
         }
-        .onChange(of: accountsVM.accounts) { _, updatedAccounts in
+        .onReceive(accountsVM.$accounts) { updatedAccounts in
             if let fresh = updatedAccounts.first(where: { $0.id == currentAccount.id }) {
                 currentAccount = fresh
             }
