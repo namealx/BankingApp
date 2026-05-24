@@ -2,23 +2,30 @@
 //  ContentView.swift
 //  BankingApp
 //
-//  Created by Admin on 23.05.2026.
+//  Created by Nikita Yuranov on 22.05.2026
+//  Group: 12b
 //
 
 import SwiftUI
 
+// MARK: - ContentView
 struct ContentView: View {
+    @EnvironmentObject var authVM: AuthViewModel
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Group {
+            if authVM.isLoggedIn {
+                MainTabView()
+            } else {
+                LoginView()
+            }
         }
-        .padding()
+        .animation(.easeInOut, value: authVM.isLoggedIn)
     }
 }
 
 #Preview {
     ContentView()
+        .environmentObject(AuthViewModel())
 }
+
