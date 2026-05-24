@@ -122,3 +122,64 @@
 /* Alerts */
 "success" = "Успешно";
 "error" = "Ошибка";
+
+/* Additional keys */
+"actions" = "Действия";
+"account_number" = "Номер счета";
+"open_date" = "Дата открытия";
+"no_accounts" = "Нет счетов";
+"no_transactions" = "Нет операций";
+"transfer_funds" = "Перевести средства";
+"confirm" = "Подтверждение";
+"are_you_sure" = "Вы уверены?";
+"cannot_delete_overdraft" = "Невозможно удалить счет с отрицательным балансом";
+"balance_format" = "Баланс: %.2f %@";
+"balance_zero" = "Баланс счета: 0.00";
+"funds_transfer_note" = "Средства будут перенесены на другой счет";
+"select_transfer_account" = "Выберите счет для переноса средств";
+"transfer_limits_fmt" = "Лимиты: от 0.01 до %.2f %@";
+"statistics" = "Статистика";
+"total_accounts" = "Всего счетов";
+"active_accounts" = "Активных счетов";
+"new_password_hint" = "Новый пароль (мин. 6 символов)";
+"about" = "О приложении";
+"version" = "Версия";
+"clear_cache_title" = "Очистка кэша";
+"clear_cache_confirm" = "Это действие очистит кэш приложения. Продолжить?";
+"cache_cleared_title" = "Кэш очищен";
+"cache_cleared_message" = "Кэш приложения успешно очищен.";
+
+/* Currency names */
+"currency_byn" = "Белорусский рубль";
+"currency_usd" = "Доллар США";
+"currency_eur" = "Евро";
+"currency_rub" = "Российский рубль";
+"currency_gbp" = "Фунт стерлингов";
+"currency_cny" = "Китайский юань";
+"currency_pln" = "Польский злотый";
+
+/* Auth errors */
+"error_fill_name" = "Заполните поле ФИО";
+"error_fill_phone" = "Заполните поле телефона";
+"error_fill_login" = "Заполните поле логина";
+
+/* Transfer errors */
+"error_select_sender" = "Выберите счет отправителя";
+"error_select_receiver" = "Выберите счет получателя";
+"error_same_account" = "Нельзя перевести на тот же счет";
+"error_min_amount" = "Минимальная сумма перевода 0.01 BYN";
+"error_max_amount" = "Максимальная сумма перевода 10 000 BYN";
+"error_insufficient_funds" = "Недостаточно средств на счете";
+"transfer_success_message" = "Успешно переведено %@ %@ на счет %@";
+
+/* Account actions */
+"error_enter_account_name" = "Введите название счета";
+"error_account_not_found" = "Счет не найден";
+"account_created" = "Счет успешно создан";
+"account_closed" = "Счет успешно закрыт";
+
+/* Profile */
+"error_user_not_found" = "Пользователь не найден";
+"error_wrong_password" = "Неверный текущий пароль";
+"profile_updated" = "Профиль успешно обновлен";
+"password_changed" = "Пароль успешно изменен";

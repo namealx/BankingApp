@@ -38,7 +38,7 @@ struct AccountsView: View {
             List {
                 Section {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Общий баланс")
+                        Text("total_balance".localized)
                             .font(.caption)
                             .foregroundColor(.secondary)
                         Text(String(format: "%.2f BYN", accountsVM.totalBalanceInBYN))
@@ -49,18 +49,18 @@ struct AccountsView: View {
                 }
                 
                 Section {
-                    Picker("Показать", selection: $showAllAccounts) {
-                        Text("Все счета").tag(true)
-                        Text("Активные").tag(false)
+                    Picker("", selection: $showAllAccounts) {
+                        Text("all".localized).tag(true)
+                        Text("active".localized).tag(false)
                     }
                     .pickerStyle(.segmented)
                 }
                 
-                Section("Мои счета") {
+                Section("my_accounts".localized) {
                     if accountsVM.isLoading {
                         ProgressView()
                     } else if displayedAccounts.isEmpty {
-                        Text("Нет счетов").foregroundColor(.gray)
+                        Text("no_accounts".localized).foregroundColor(.gray)
                     } else {
                         ForEach(displayedAccounts) { account in
                             NavigationLink(destination: AccountDetailView(account: account)
@@ -73,7 +73,7 @@ struct AccountsView: View {
                     }
                 }
             }
-            .navigationTitle("Счета")
+            .navigationTitle("tab_accounts".localized)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showCreateSheet = true }) {
@@ -92,27 +92,23 @@ struct AccountsView: View {
                     .environmentObject(accountsVM)
                     .environmentObject(authVM)
             }
-            .alert("Успех", isPresented: $showSuccessAlert) {
-                Button("OK") {
+            .alert("success".localized, isPresented: $showSuccessAlert) {
+                Button("ok".localized) {
                     accountsVM.successMessage = ""
                 }
             } message: {
                 Text(accountsVM.successMessage)
             }
-            .alert("Ошибка", isPresented: $showErrorAlert) {
-                Button("OK") { accountsVM.errorMessage = "" }
+            .alert("error".localized, isPresented: $showErrorAlert) {
+                Button("ok".localized) { accountsVM.errorMessage = "" }
             } message: {
                 Text(accountsVM.errorMessage)
             }
             .onReceive(accountsVM.$successMessage) { msg in
-                if !msg.isEmpty {
-                    showSuccessAlert = true
-                }
+                if !msg.isEmpty { showSuccessAlert = true }
             }
             .onReceive(accountsVM.$errorMessage) { msg in
-                if !msg.isEmpty {
-                    showErrorAlert = true
-                }
+                if !msg.isEmpty { showErrorAlert = true }
             }
             .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("RefreshAccounts"))) { _ in
                 if let userId = authVM.currentUser?.id {
@@ -155,11 +151,11 @@ struct AccountRowView: View {
                 Text(account.name).font(.headline)
                 Text(account.type.localizedName).font(.caption).foregroundColor(.secondary)
                 if account.hasOverdraft {
-                    Text("Овердрафт: \(Int(account.overdraftLimit)) BYN")
+                    Text(String(format: "overdraft".localized, account.overdraftLimit))
                         .font(.caption2).foregroundColor(.orange)
                 }
                 if !account.isActive {
-                    Text("Закрыт").font(.caption2).foregroundColor(.red)
+                    Text("closed".localized).font(.caption2).foregroundColor(.red)
                 }
             }
             
@@ -226,11 +222,11 @@ struct AccountDetailView: View {
         List {
             Section {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Баланс").font(.caption).foregroundColor(.secondary)
+                    Text("balance".localized).font(.caption).foregroundColor(.secondary)
                     Text(formatAmount(currentBalance) + " " + account.currency)
                         .font(.title.bold())
                     if account.hasOverdraft {
-                        Text("Доступно с овердрафтом: \(formatAmount(account.availableBalance)) \(account.currency)")
+                        Text(String(format: "available_with_overdraft".localized, account.availableBalance))
                             .font(.caption).foregroundColor(.orange)
                     }
                 }
@@ -238,9 +234,8 @@ struct AccountDetailView: View {
             }
             
             if account.isActive {
-                Section("Действия") {
+                Section("actions".localized) {
                     Button {
-                        
                         transferVM.fromAccount = account
                         transferVM.toAccount = nil
                         transferVM.amountString = ""
@@ -249,27 +244,27 @@ struct AccountDetailView: View {
                         transferVM.isTransferComplete = false
                         NotificationCenter.default.post(name: NSNotification.Name("SwitchToTransferTab"), object: nil)
                     } label: {
-                        Label("Перевести средства", systemImage: "arrow.right.circle")
+                        Label("transfer_funds".localized, systemImage: "arrow.right.circle")
                     }
                     
                     Button(role: .destructive) {
                         showDeleteSheet = true
                     } label: {
-                        Label("Закрыть счет", systemImage: "trash")
+                        Label("close_account_title".localized, systemImage: "trash")
                     }
                 }
             }
             
-            Section("Информация") {
-                HStack { Text("Номер счета"); Spacer(); Text("\(account.id)").foregroundColor(.secondary) }
-                HStack { Text("Тип счета"); Spacer(); Text(account.type.localizedName).foregroundColor(.secondary) }
-                HStack { Text("Статус"); Spacer(); Text(account.isActive ? "Активен" : "Закрыт").foregroundColor(account.isActive ? .green : .red) }
-                HStack { Text("Дата открытия"); Spacer(); Text(account.createdAt.formatted(date: .abbreviated, time: .omitted)).foregroundColor(.secondary) }
+            Section("account_info".localized) {
+                HStack { Text("account_number".localized); Spacer(); Text("\(account.id)").foregroundColor(.secondary) }
+                HStack { Text("account_type".localized); Spacer(); Text(account.type.localizedName).foregroundColor(.secondary) }
+                HStack { Text("status".localized); Spacer(); Text(account.isActive ? "active".localized : "closed".localized).foregroundColor(account.isActive ? .green : .red) }
+                HStack { Text("open_date".localized); Spacer(); Text(account.createdAt.formatted(date: .abbreviated, time: .omitted)).foregroundColor(.secondary) }
             }
             
             Section {
-                Picker("Фильтр", selection: $selectedFilter) {
-                    Text("Все").tag(Optional<TransactionType>.none)
+                Picker("filter".localized, selection: $selectedFilter) {
+                    Text("all".localized).tag(Optional<TransactionType>.none)
                     ForEach(TransactionType.allCases, id: \.self) { type in
                         Text(type.localizedName).tag(Optional(type))
                     }
@@ -280,9 +275,9 @@ struct AccountDetailView: View {
                 }
             }
             
-            Section("История операций") {
+            Section("transactions".localized) {
                 if accountsVM.filteredTransactions.isEmpty {
-                    Text("Нет операций").foregroundColor(.gray).frame(maxWidth: .infinity, alignment: .center).padding()
+                    Text("no_transactions".localized).foregroundColor(.gray).frame(maxWidth: .infinity, alignment: .center).padding()
                 } else {
                     ForEach(accountsVM.filteredTransactions) { tx in
                         TransactionRowView(transaction: tx)
@@ -297,7 +292,6 @@ struct AccountDetailView: View {
                 currentBalance = updated.balance
             }
         }
-       
         .onReceive(accountsVM.$accounts) { updatedAccounts in
             if let updated = updatedAccounts.first(where: { $0.id == account.id }) {
                 currentBalance = updated.balance
@@ -378,22 +372,22 @@ struct CreateAccountSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Информация о счете") {
-                    TextField("Название счета", text: $accountsVM.newAccountName)
+                Section("account_info".localized) {
+                    TextField("account_name".localized, text: $accountsVM.newAccountName)
                         .accessibilityIdentifier("newAccountNameField")
-                    Picker("Тип счета", selection: $accountsVM.newAccountType) {
+                    Picker("account_type".localized, selection: $accountsVM.newAccountType) {
                         ForEach(AccountType.allCases, id: \.self) { type in
                             Text(type.localizedName).tag(type)
                         }
                     }
                     if accountsVM.newAccountType == .card {
-                        Picker("Тип карты", selection: $accountsVM.newCardSubtype) {
+                        Picker("card_subtype".localized, selection: $accountsVM.newCardSubtype) {
                             ForEach(CardSubtype.allCases, id: \.self) { subtype in
                                 Text(subtype.rawValue.capitalized).tag(subtype)
                             }
                         }
                     }
-                    Picker("Валюта", selection: $accountsVM.newAccountCurrency) {
+                    Picker("currency".localized, selection: $accountsVM.newAccountCurrency) {
                         ForEach(["BYN", "USD", "EUR", "RUB"], id: \.self) { c in Text(c).tag(c) }
                     }
                 }
@@ -401,7 +395,7 @@ struct CreateAccountSheet: View {
                     Section { Text(accountsVM.errorMessage).foregroundColor(.red) }
                 }
                 Section {
-                    Button("Создать счет") {
+                    Button("create_account".localized) {
                         if let userId = authVM.currentUser?.id {
                             accountsVM.createAccount(userId: userId)
                             if accountsVM.errorMessage.isEmpty { dismiss() }
@@ -411,8 +405,8 @@ struct CreateAccountSheet: View {
                     .accessibilityIdentifier("createAccountConfirmButton")
                 }
             }
-            .navigationTitle("Новый счет")
-            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Отмена") { dismiss() } } }
+            .navigationTitle("new_account".localized)
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("cancel".localized) { dismiss() } } }
         }
     }
 }
@@ -443,30 +437,30 @@ struct DeleteAccountSheet: View {
                             Image(systemName: cannotDeleteDueToOverdraft ? "exclamationmark.triangle.fill" : "trash.circle.fill")
                                 .font(.system(size: 42)).foregroundColor(.red)
                         }
-                        Text("Закрыть счет").font(.title2.bold())
+                        Text("close_account_title".localized).font(.title2.bold())
                         Text(account.name).font(.subheadline).foregroundColor(.secondary)
                     }
                     
                     if cannotDeleteDueToOverdraft {
                         VStack {
-                            Text("Невозможно удалить счет с отрицательным балансом").font(.headline).multilineTextAlignment(.center).foregroundColor(.red)
-                            Text(String(format: "Баланс: %.2f %@", account.balance, account.currency))
+                            Text("cannot_delete_overdraft".localized).font(.headline).multilineTextAlignment(.center).foregroundColor(.red)
+                            Text(String(format: "balance_format".localized, account.balance, account.currency))
                         }.padding().background(Color.red.opacity(0.08)).cornerRadius(16)
                     } else if !hasBalance {
                         VStack {
                             Image(systemName: "checkmark.circle.fill").font(.largeTitle).foregroundColor(.green)
-                            Text("Баланс счета: 0.00").font(.headline)
+                            Text("balance_zero".localized).font(.headline)
                         }.padding().background(Color.green.opacity(0.08)).cornerRadius(16)
                     } else {
                         VStack {
-                            Text(String(format: "Баланс счета: %.2f %@", account.balance, account.currency)).font(.title3.bold())
-                            Text("Средства будут перенесены на другой счет").foregroundColor(.orange)
+                            Text(String(format: "balance_format".localized, account.balance, account.currency)).font(.title3.bold())
+                            Text("funds_transfer_note".localized).foregroundColor(.orange)
                         }.padding().background(Color.orange.opacity(0.08)).cornerRadius(16)
                     }
                     
                     if !cannotDeleteDueToOverdraft && hasBalance && !otherAccounts.isEmpty {
                         VStack(alignment: .leading) {
-                            Text("Выберите счет для переноса средств").font(.footnote.bold())
+                            Text("select_transfer_account".localized).font(.footnote.bold())
                             ForEach(otherAccounts) { acc in
                                 Button {
                                     selectedTransferAccount = acc
@@ -487,9 +481,7 @@ struct DeleteAccountSheet: View {
                         }.padding(.horizontal)
                     }
                     
-                    if isDeleting {
-                        ProgressView()
-                    }
+                    if isDeleting { ProgressView() }
                 }
                 .padding(.top)
             }
@@ -497,7 +489,7 @@ struct DeleteAccountSheet: View {
             Button {
                 showConfirmAlert = true
             } label: {
-                Text("Закрыть счет")
+                Text("close_account_title".localized)
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(cannotDeleteDueToOverdraft ? Color.gray : Color.red)
@@ -509,17 +501,16 @@ struct DeleteAccountSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Отмена") { dismiss() }
+                    Button("cancel".localized) { dismiss() }
                 }
             }
-            .alert("Подтверждение", isPresented: $showConfirmAlert) {
-                Button("Отмена", role: .cancel) { }
-                Button("Закрыть", role: .destructive) {
+            .alert("confirm".localized, isPresented: $showConfirmAlert) {
+                Button("cancel".localized, role: .cancel) { }
+                Button("close".localized, role: .destructive) {
                     isDeleting = true
                     let transferId = selectedTransferAccount?.id
                     accountsVM.deleteAccount(id: account.id, transferToId: transferId) {
                         isDeleting = false
-                        
                         dismiss()
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                             onDeleted()
@@ -527,7 +518,7 @@ struct DeleteAccountSheet: View {
                     }
                 }
             } message: {
-                Text(cannotDeleteDueToOverdraft ? "Невозможно удалить счет с отрицательным балансом" : "Вы уверены?")
+                Text(cannotDeleteDueToOverdraft ? "cannot_delete_overdraft".localized : "are_you_sure".localized)
             }
             .onAppear {
                 if hasBalance && !otherAccounts.isEmpty && selectedTransferAccount == nil {

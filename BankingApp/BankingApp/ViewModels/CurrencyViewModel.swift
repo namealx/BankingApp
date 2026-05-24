@@ -38,15 +38,14 @@ final class CurrencyViewModel: ObservableObject {
         isLoading = true
         errorMessage = ""
         
-        // Базовые курсы валют (в реальном приложении - из API)
-        let baseRates: [(code: String, name: String, rateToBYN: Double, rateToUSD: Double)] = [
-            ("BYN", "Белорусский рубль", 1.0, 0.308),
-            ("USD", "Доллар США", 3.245, 1.0),
-            ("EUR", "Евро", 3.512, 1.082),
-            ("RUB", "Российский рубль", 0.0362, 0.01115),
-            ("GBP", "Фунт стерлингов", 4.123, 1.270),
-            ("CNY", "Китайский юань", 0.449, 0.1384),
-            ("PLN", "Польский злотый", 0.811, 0.250)
+        let baseRates: [(code: String, nameKey: String, rateToBYN: Double, rateToUSD: Double)] = [
+            ("BYN", "currency_byn", 1.0, 0.308),
+            ("USD", "currency_usd", 3.245, 1.0),
+            ("EUR", "currency_eur", 3.512, 1.082),
+            ("RUB", "currency_rub", 0.0362, 0.01115),
+            ("GBP", "currency_gbp", 4.123, 1.270),
+            ("CNY", "currency_cny", 0.449, 0.1384),
+            ("PLN", "currency_pln", 0.811, 0.250)
         ]
         
         DispatchQueue.global().async { [weak self] in
@@ -55,7 +54,7 @@ final class CurrencyViewModel: ObservableObject {
             let loadedRates = baseRates.map { data in
                 CurrencyRate(
                     code: data.code,
-                    name: data.name,
+                    name: data.nameKey.localized,
                     rateToBYN: data.rateToBYN,
                     rateToUSD: data.rateToUSD,
                     changePercent: Double.random(in: -2.0...2.0),

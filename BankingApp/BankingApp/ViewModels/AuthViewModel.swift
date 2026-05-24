@@ -45,7 +45,7 @@ final class AuthViewModel: ObservableObject {
     // MARK: - Login
     func performLogin() {
         guard !login.isEmpty, !password.isEmpty else {
-            errorMessage = "Заполните все поля"
+            errorMessage = "error_fill_fields".localized
             return
         }
         
@@ -60,11 +60,10 @@ final class AuthViewModel: ObservableObject {
                         self?.settings.currentUserId = user.id
                         self?.isLoggedIn = true
                         self?.isLoading = false
-                        print("✅ User logged in: \(user.login)")
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self?.errorMessage = "Неверный логин или пароль"
+                        self?.errorMessage = "error_invalid_credentials".localized
                         self?.isLoading = false
                     }
                 }
@@ -86,10 +85,9 @@ final class AuthViewModel: ObservableObject {
         
         DispatchQueue.global().async { [weak self] in
             do {
-                // Проверка существования логина
                 if try self?.db.isLoginExists(self?.login ?? "") == true {
                     DispatchQueue.main.async {
-                        self?.errorMessage = "Пользователь с таким логином уже существует"
+                        self?.errorMessage = "error_login_exists".localized
                         self?.isLoading = false
                     }
                     return
@@ -111,7 +109,6 @@ final class AuthViewModel: ObservableObject {
                         self?.settings.currentUserId = newUser.id
                         self?.isLoggedIn = true
                         self?.isLoading = false
-                        print("✅ User registered: \(newUser.login)")
                     }
                 }
             } catch {
@@ -140,35 +137,29 @@ final class AuthViewModel: ObservableObject {
     // MARK: - Validation
     private func validateRegistration() -> Bool {
         guard !fullName.isEmpty else {
-            errorMessage = "Заполните поле ФИО"
+            errorMessage = "error_fill_name".localized
             return false
         }
-        
         guard email.contains("@") && email.contains(".") else {
-            errorMessage = "Введите корректный email"
+            errorMessage = "error_invalid_email".localized
             return false
         }
-        
         guard !phone.isEmpty else {
-            errorMessage = "Заполните поле телефона"
+            errorMessage = "error_fill_phone".localized
             return false
         }
-        
         guard !login.isEmpty else {
-            errorMessage = "Заполните поле логина"
+            errorMessage = "error_fill_login".localized
             return false
         }
-        
         guard password.count >= 6 else {
-            errorMessage = "Пароль должен быть не менее 6 символов"
+            errorMessage = "error_password_short".localized
             return false
         }
-        
         guard password == confirmPassword else {
-            errorMessage = "Пароли не совпадают"
+            errorMessage = "error_passwords_mismatch".localized
             return false
         }
-        
         return true
     }
     

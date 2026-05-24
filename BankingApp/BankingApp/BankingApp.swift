@@ -13,14 +13,18 @@ import SwiftUI
 struct BankingApp: App {
     @StateObject private var authVM = AuthViewModel()
     @StateObject private var settings = SettingsManager.shared
+    @State private var languageVersion = 0
 
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .id(languageVersion)
                 .environmentObject(authVM)
                 .environmentObject(settings)
                 .preferredColorScheme(settings.swiftUIColorScheme)
+                .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LanguageChanged"))) { _ in
+                    languageVersion += 1
+                }
         }
     }
 }
-

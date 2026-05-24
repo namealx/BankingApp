@@ -23,22 +23,22 @@ struct LoginView: View {
                     Image(systemName: "building.columns.fill")
                         .font(.system(size: 60))
                         .foregroundColor(.blue)
-                    Text("BankingApp")
+                    Text("app_name".localized)
                         .font(.largeTitle.bold())
-                    Text("Ваш надежный финансовый помощник")
+                    Text("login_subtitle".localized)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
                 
                 // MARK: - Login Form
                 VStack(spacing: 16) {
-                    TextField("Логин", text: $authVM.login)
+                    TextField("login_placeholder".localized, text: $authVM.login)
                         .textFieldStyle(.roundedBorder)
                         .autocapitalization(.none)
                         .disabled(authVM.isLoading)
                         .accessibilityIdentifier("loginField")
                     
-                    SecureField("Пароль", text: $authVM.password)
+                    SecureField("password_placeholder".localized, text: $authVM.password)
                         .textFieldStyle(.roundedBorder)
                         .disabled(authVM.isLoading)
                         .accessibilityIdentifier("passwordField")
@@ -58,7 +58,7 @@ struct LoginView: View {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle(tint: .white))
                     } else {
-                        Text("Войти")
+                        Text("login_button".localized)
                             .fontWeight(.semibold)
                     }
                 }
@@ -76,7 +76,7 @@ struct LoginView: View {
                     authVM.login = "demo"
                     authVM.password = "demo123"
                 }) {
-                    Text("Использовать демо-аккаунт")
+                    Text("use_demo".localized)
                         .font(.caption)
                         .foregroundColor(.blue)
                 }
@@ -87,7 +87,7 @@ struct LoginView: View {
                 
                 // MARK: - Register Link
                 Button(action: { showRegister = true }) {
-                    Text("Нет аккаунта? Зарегистрироваться")
+                    Text("no_account".localized)
                         .foregroundColor(.blue)
                 }
                 .padding(.bottom)
@@ -112,35 +112,35 @@ struct RegisterView: View {
         NavigationStack {
             Form {
                 // MARK: - Personal Info
-                Section("Личная информация") {
-                    TextField("ФИО", text: $authVM.fullName)
+                Section("section_personal".localized) {
+                    TextField("full_name_placeholder".localized, text: $authVM.fullName)
                         .disabled(authVM.isLoading)
                         .accessibilityIdentifier("fullNameField")
                     
-                    TextField("Email", text: $authVM.email)
+                    TextField("email_placeholder".localized, text: $authVM.email)
                         .autocapitalization(.none)
                         .keyboardType(.emailAddress)
                         .disabled(authVM.isLoading)
                         .accessibilityIdentifier("emailField")
                     
-                    TextField("Телефон", text: $authVM.phone)
+                    TextField("phone_placeholder".localized, text: $authVM.phone)
                         .keyboardType(.phonePad)
                         .disabled(authVM.isLoading)
                         .accessibilityIdentifier("phoneField")
                 }
                 
                 // MARK: - Credentials
-                Section("Данные для входа") {
-                    TextField("Логин", text: $authVM.login)
+                Section("section_credentials".localized) {
+                    TextField("login_placeholder".localized, text: $authVM.login)
                         .autocapitalization(.none)
                         .disabled(authVM.isLoading)
                         .accessibilityIdentifier("regLoginField")
                     
-                    SecureField("Пароль", text: $authVM.password)
+                    SecureField("password_placeholder".localized, text: $authVM.password)
                         .disabled(authVM.isLoading)
                         .accessibilityIdentifier("regPasswordField")
                     
-                    SecureField("Подтвердите пароль", text: $authVM.confirmPassword)
+                    SecureField("confirm_password_placeholder".localized, text: $authVM.confirmPassword)
                         .disabled(authVM.isLoading)
                         .accessibilityIdentifier("confirmPasswordField")
                 }
@@ -156,7 +156,7 @@ struct RegisterView: View {
                 
                 // MARK: - Register Button
                 Section {
-                    Button("Зарегистрироваться") {
+                    Button("register_button".localized) {
                         authVM.performRegister()
                         if authVM.isLoggedIn { dismiss() }
                     }
@@ -164,8 +164,8 @@ struct RegisterView: View {
                     .accessibilityIdentifier("registerButton")
                 }
             }
-            .navigationTitle("Регистрация")
-            .navigationBarItems(leading: Button("Отмена") {
+            .navigationTitle("register_title".localized)
+            .navigationBarItems(leading: Button("cancel".localized) {
                 authVM.resetForm()
                 dismiss()
             })

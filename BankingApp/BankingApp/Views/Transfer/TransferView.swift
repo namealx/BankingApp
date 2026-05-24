@@ -29,9 +29,9 @@ struct TransferView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Со счета") {
-                    Picker("Выберите счет", selection: $transferVM.fromAccount) {
-                        Text("Выберите").tag(Optional<Account>.none)
+                Section("from_account".localized) {
+                    Picker("select_account".localized, selection: $transferVM.fromAccount) {
+                        Text("select".localized).tag(Optional<Account>.none)
                         ForEach(accountsVM.accounts.filter { $0.isActive }) { account in
                             Text("\(account.name) — \(formatAmount(account.balance)) \(account.currency)")
                                 .tag(Optional(account))
@@ -40,9 +40,9 @@ struct TransferView: View {
                     .disabled(transferVM.isProcessing)
                 }
                 
-                Section("На счет") {
-                    Picker("Выберите счет", selection: $transferVM.toAccount) {
-                        Text("Выберите").tag(Optional<Account>.none)
+                Section("to_account".localized) {
+                    Picker("select_account".localized, selection: $transferVM.toAccount) {
+                        Text("select".localized).tag(Optional<Account>.none)
                         ForEach(accountsVM.accounts.filter { $0.isActive }) { account in
                             Text("\(account.name) — \(formatAmount(account.balance)) \(account.currency)")
                                 .tag(Optional(account))
@@ -51,7 +51,7 @@ struct TransferView: View {
                     .disabled(transferVM.isProcessing)
                 }
                 
-                Section("Сумма") {
+                Section("amount".localized) {
                     HStack {
                         TextField("0.00", text: $transferVM.amountString)
                             .keyboardType(.decimalPad)
@@ -60,13 +60,11 @@ struct TransferView: View {
                     
                     if let fromAcc = transferVM.fromAccount {
                         let maxInCurrency = 10000.0 / rateToBYN(fromAcc.currency)
-                        Text("Лимиты: от 0.01 до \(String(format: "%.2f", maxInCurrency)) \(fromAcc.currency)")
+                        Text(String(format: "transfer_limits_fmt".localized, maxInCurrency, fromAcc.currency))
                             .font(.caption).foregroundColor(.secondary)
                     }
                     
-                    if transferVM.isProcessing {
-                        ProgressView()
-                    }
+                    if transferVM.isProcessing { ProgressView() }
                 }
                 
                 if !transferVM.errorMessage.isEmpty {
@@ -80,7 +78,7 @@ struct TransferView: View {
                             if transferVM.isProcessing {
                                 ProgressView().tint(.white)
                             } else {
-                                Text("Перевести").fontWeight(.semibold)
+                                Text("transfer_button".localized).fontWeight(.semibold)
                             }
                             Spacer()
                         }
@@ -93,9 +91,9 @@ struct TransferView: View {
                     .disabled(!isFormValid || transferVM.isProcessing)
                 }
             }
-            .navigationTitle("Перевод")
-            .alert("Перевод выполнен", isPresented: $showSuccess) {
-                Button("OK") {
+            .navigationTitle("tab_transfer".localized)
+            .alert("transfer_success_title".localized, isPresented: $showSuccess) {
+                Button("ok".localized) {
                     transferVM.reset()
                     showSuccess = false
                 }
@@ -121,7 +119,6 @@ struct TransferView: View {
     }
     
     private func performTransfer() {
-        
         transferVM.onTransferSuccess = { newFrom, newTo, fromId, toId in
             accountsVM.updateAccountBalanceLocally(id: fromId, newBalance: newFrom)
             accountsVM.updateAccountBalanceLocally(id: toId, newBalance: newTo)

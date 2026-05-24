@@ -50,7 +50,7 @@ final class ProfileViewModel: ObservableObject {
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self?.errorMessage = "Пользователь не найден"
+                        self?.errorMessage = "error_user_not_found".localized
                         self?.isLoading = false
                     }
                 }
@@ -65,9 +65,9 @@ final class ProfileViewModel: ObservableObject {
     
     // MARK: - Update Profile
     func updateProfile() {
-        guard var currentUser = user else { return }
+        guard let currentUser = user else { return }
         guard !editFullName.isEmpty, !editEmail.isEmpty, !editPhone.isEmpty else {
-            errorMessage = "Заполните все поля"
+            errorMessage = "error_fill_fields".localized
             return
         }
         
@@ -90,7 +90,7 @@ final class ProfileViewModel: ObservableObject {
                 try self?.db.updateUser(updatedUser)
                 DispatchQueue.main.async {
                     self?.user = updatedUser
-                    self?.successMessage = "Профиль успешно обновлен"
+                    self?.successMessage = "profile_updated".localized
                     self?.isLoading = false
                     self?.selectedImage = nil
                 }
@@ -108,22 +108,19 @@ final class ProfileViewModel: ObservableObject {
         guard let currentUser = user else { return }
         
         guard !currentPassword.isEmpty, !newPassword.isEmpty, !confirmNewPassword.isEmpty else {
-            errorMessage = "Заполните все поля"
+            errorMessage = "error_fill_fields".localized
             return
         }
-        
         guard currentPassword == currentUser.password else {
-            errorMessage = "Неверный текущий пароль"
+            errorMessage = "error_wrong_password".localized
             return
         }
-        
         guard newPassword.count >= 6 else {
-            errorMessage = "Новый пароль должен быть не менее 6 символов"
+            errorMessage = "error_password_short".localized
             return
         }
-        
         guard newPassword == confirmNewPassword else {
-            errorMessage = "Новые пароли не совпадают"
+            errorMessage = "error_passwords_mismatch".localized
             return
         }
         
@@ -134,7 +131,7 @@ final class ProfileViewModel: ObservableObject {
             do {
                 try self?.db.updatePassword(userId: currentUser.id, newPassword: self?.newPassword ?? "")
                 DispatchQueue.main.async {
-                    self?.successMessage = "Пароль успешно изменен"
+                    self?.successMessage = "password_changed".localized
                     self?.currentPassword = ""
                     self?.newPassword = ""
                     self?.confirmNewPassword = ""

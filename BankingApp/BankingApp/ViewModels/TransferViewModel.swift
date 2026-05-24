@@ -39,13 +39,8 @@ final class TransferViewModel: ObservableObject {
     
     private func rateToBYN(_ currency: String) -> Double {
         let rates: [String: Double] = [
-            "BYN": 1.0,
-            "USD": 3.245,
-            "EUR": 3.512,
-            "RUB": 0.0362,
-            "GBP": 4.123,
-            "CNY": 0.449,
-            "PLN": 0.811
+            "BYN": 1.0, "USD": 3.245, "EUR": 3.512,
+            "RUB": 0.0362, "GBP": 4.123, "CNY": 0.449, "PLN": 0.811
         ]
         return rates[currency] ?? 1.0
     }
@@ -79,7 +74,7 @@ final class TransferViewModel: ObservableObject {
                     type: .transfer,
                     amount: self.amount,
                     currency: from.currency,
-                    description: String(format: "Перевод на счет %@", to.name),
+                    description: String(format: "transfer_to".localized, to.name),
                     relatedAccountId: to.id
                 )
                 _ = try self.db.addTransaction(txFrom)
@@ -89,17 +84,16 @@ final class TransferViewModel: ObservableObject {
                     type: .income,
                     amount: amountToReceive,
                     currency: to.currency,
-                    description: String(format: "Перевод со счета %@", from.name),
+                    description: String(format: "transfer_from".localized, from.name),
                     relatedAccountId: from.id
                 )
                 _ = try self.db.addTransaction(txTo)
                 
                 DispatchQueue.main.async {
                     let formattedAmount = self.formatAmount(self.amount)
-                    self.successMessage = String(format: "Успешно переведено %@ %@ на счет %@", formattedAmount, from.currency, to.name)
+                    self.successMessage = String(format: "transfer_success_message".localized, formattedAmount, from.currency, to.name)
                     self.isTransferComplete = true
                     self.isProcessing = false
-                    
                     self.onTransferSuccess?(newFromBalance, newToBalance, from.id, to.id)
                 }
             } catch {
@@ -114,27 +108,27 @@ final class TransferViewModel: ObservableObject {
     
     private func validate(accounts: [Account]) -> Bool {
         guard fromAccount != nil else {
-            errorMessage = "Выберите счет отправителя"
+            errorMessage = "error_select_sender".localized
             return false
         }
         guard toAccount != nil else {
-            errorMessage = "Выберите счет получателя"
+            errorMessage = "error_select_receiver".localized
             return false
         }
         guard fromAccount?.id != toAccount?.id else {
-            errorMessage = "Нельзя перевести на тот же счет"
+            errorMessage = "error_same_account".localized
             return false
         }
         guard amount >= 0.01 else {
-            errorMessage = "Минимальная сумма перевода 0.01 BYN"
+            errorMessage = "error_min_amount".localized
             return false
         }
         guard amount <= 10000 else {
-            errorMessage = "Максимальная сумма перевода 10 000 BYN"
+            errorMessage = "error_max_amount".localized
             return false
         }
         guard let from = fromAccount, from.availableBalance >= amount else {
-            errorMessage = "Недостаточно средств на счете"
+            errorMessage = "error_insufficient_funds".localized
             return false
         }
         return true

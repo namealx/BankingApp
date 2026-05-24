@@ -43,39 +43,39 @@ struct ProfileView: View {
                 }
                 
                 // MARK: Account Actions
-                Section("Аккаунт") {
+                Section("account".localized) {
                     Button(action: { showEditProfile = true }) {
-                        Label("Редактировать профиль", systemImage: "person.crop.circle")
+                        Label("edit_profile".localized, systemImage: "person.crop.circle")
                     }
                     .accessibilityIdentifier("editProfileButton")
                     
                     Button(action: { showChangePassword = true }) {
-                        Label("Изменить пароль", systemImage: "lock.rotation")
+                        Label("change_password".localized, systemImage: "lock.rotation")
                     }
                     .accessibilityIdentifier("changePasswordButton")
                     
                     Button(action: { showSettings = true }) {
-                        Label("Настройки", systemImage: "gear")
+                        Label("settings_title".localized, systemImage: "gear")
                     }
                     .accessibilityIdentifier("settingsButton")
                 }
                 
                 // MARK: Statistics
-                Section("Статистика") {
+                Section("statistics".localized) {
                     let stats = getAccountStatistics()
                     HStack {
-                        Text("Общий баланс")
+                        Text("total_balance".localized)
                         Spacer()
                         Text(String(format: "%.2f BYN", stats.totalBalance))
                             .foregroundColor(.blue)
                     }
                     HStack {
-                        Text("Всего счетов")
+                        Text("total_accounts".localized)
                         Spacer()
                         Text("\(stats.accountsCount)")
                     }
                     HStack {
-                        Text("Активных счетов")
+                        Text("active_accounts".localized)
                         Spacer()
                         Text("\(stats.activeCount)")
                     }
@@ -84,13 +84,13 @@ struct ProfileView: View {
                 // MARK: Logout
                 Section {
                     Button(action: { showLogoutAlert = true }) {
-                        Label("Выйти", systemImage: "rectangle.portrait.and.arrow.right")
+                        Label("logout".localized, systemImage: "rectangle.portrait.and.arrow.right")
                             .foregroundColor(.red)
                     }
                     .accessibilityIdentifier("logoutButton")
                 }
             }
-            .navigationTitle("Профиль")
+            .navigationTitle("tab_profile".localized)
             .sheet(isPresented: $showEditProfile) {
                 EditProfileView()
                     .environmentObject(profileVM)
@@ -103,21 +103,21 @@ struct ProfileView: View {
                 SettingsView()
                     .environmentObject(settings)
             }
-            .alert("Выход", isPresented: $showLogoutAlert) {
-                Button("Отмена", role: .cancel) { }
-                Button("Выйти", role: .destructive) {
+            .alert("logout".localized, isPresented: $showLogoutAlert) {
+                Button("cancel".localized, role: .cancel) { }
+                Button("logout".localized, role: .destructive) {
                     authVM.logout()
                 }
             } message: {
-                Text("Вы уверены, что хотите выйти?")
+                Text("logout_confirm".localized)
             }
-            .alert("Ошибка", isPresented: .constant(!profileVM.errorMessage.isEmpty)) {
-                Button("OK") { profileVM.errorMessage = "" }
+            .alert("error".localized, isPresented: .constant(!profileVM.errorMessage.isEmpty)) {
+                Button("ok".localized) { profileVM.errorMessage = "" }
             } message: {
                 Text(profileVM.errorMessage)
             }
-            .alert("Успех", isPresented: .constant(!profileVM.successMessage.isEmpty)) {
-                Button("OK") { profileVM.successMessage = "" }
+            .alert("success".localized, isPresented: .constant(!profileVM.successMessage.isEmpty)) {
+                Button("ok".localized) { profileVM.successMessage = "" }
             } message: {
                 Text(profileVM.successMessage)
             }
@@ -171,7 +171,6 @@ struct EditProfileView: View {
     var body: some View {
         NavigationStack {
             Form {
-                // MARK: Avatar Section
                 Section {
                     HStack {
                         Spacer()
@@ -196,22 +195,20 @@ struct EditProfileView: View {
                     }
                 }
                 
-                // MARK: Personal Info Section
-                Section("Личная информация") {
-                    TextField("ФИО", text: $profileVM.editFullName)
+                Section("section_personal".localized) {
+                    TextField("full_name_placeholder".localized, text: $profileVM.editFullName)
                         .accessibilityIdentifier("editFullNameField")
                     
-                    TextField("Email", text: $profileVM.editEmail)
+                    TextField("email_placeholder".localized, text: $profileVM.editEmail)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
                         .accessibilityIdentifier("editEmailField")
                     
-                    TextField("Телефон", text: $profileVM.editPhone)
+                    TextField("phone_placeholder".localized, text: $profileVM.editPhone)
                         .keyboardType(.phonePad)
                         .accessibilityIdentifier("editPhoneField")
                 }
                 
-                // MARK: Error/Success Messages
                 if !profileVM.errorMessage.isEmpty {
                     Section {
                         Text(profileVM.errorMessage)
@@ -225,7 +222,6 @@ struct EditProfileView: View {
                     }
                 }
                 
-                // MARK: Save Button
                 Section {
                     Button(action: {
                         profileVM.updateProfile()
@@ -237,7 +233,7 @@ struct EditProfileView: View {
                             ProgressView()
                                 .frame(maxWidth: .infinity)
                         } else {
-                            Text("Сохранить")
+                            Text("save".localized)
                                 .frame(maxWidth: .infinity)
                         }
                     }
@@ -245,11 +241,11 @@ struct EditProfileView: View {
                     .accessibilityIdentifier("saveProfileButton")
                 }
             }
-            .navigationTitle("Редактирование профиля")
+            .navigationTitle("edit_profile_title".localized)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Отмена") {
+                    Button("cancel".localized) {
                         profileVM.clearForm()
                         dismiss()
                     }
@@ -268,16 +264,16 @@ struct ChangePasswordView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Текущий пароль") {
-                    SecureField("Текущий пароль", text: $profileVM.currentPassword)
+                Section("current_password".localized) {
+                    SecureField("current_password".localized, text: $profileVM.currentPassword)
                         .accessibilityIdentifier("currentPasswordField")
                 }
                 
-                Section("Новый пароль") {
-                    SecureField("Новый пароль (мин. 6 символов)", text: $profileVM.newPassword)
+                Section("new_password".localized) {
+                    SecureField("new_password_hint".localized, text: $profileVM.newPassword)
                         .accessibilityIdentifier("newPasswordField")
                     
-                    SecureField("Подтвердите новый пароль", text: $profileVM.confirmNewPassword)
+                    SecureField("confirm_password_placeholder".localized, text: $profileVM.confirmNewPassword)
                         .accessibilityIdentifier("confirmNewPasswordField")
                 }
                 
@@ -305,7 +301,7 @@ struct ChangePasswordView: View {
                             ProgressView()
                                 .frame(maxWidth: .infinity)
                         } else {
-                            Text("Изменить пароль")
+                            Text("change_password".localized)
                                 .frame(maxWidth: .infinity)
                         }
                     }
@@ -313,11 +309,11 @@ struct ChangePasswordView: View {
                     .accessibilityIdentifier("changePasswordConfirmButton")
                 }
             }
-            .navigationTitle("Смена пароля")
+            .navigationTitle("change_password".localized)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Отмена") {
+                    Button("cancel".localized) {
                         profileVM.clearForm()
                         dismiss()
                     }
@@ -340,15 +336,15 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 // MARK: Appearance
-                Section("Внешний вид") {
-                    Picker("Тема", selection: $settings.colorScheme) {
+                Section("appearance".localized) {
+                    Picker("theme".localized, selection: $settings.colorScheme) {
                         ForEach(ColorSchemePreference.allCases, id: \.self) { scheme in
                             Text(scheme.localizedName).tag(scheme)
                         }
                     }
                     .accessibilityIdentifier("themePicker")
                     
-                    Picker("Язык", selection: $settings.language) {
+                    Picker("language".localized, selection: $settings.language) {
                         ForEach(AppLanguage.allCases, id: \.self) { lang in
                             Text(lang.localizedName).tag(lang)
                         }
@@ -357,12 +353,12 @@ struct SettingsView: View {
                 }
                 
                 // MARK: Notifications
-                Section("Уведомления") {
-                    Toggle("Включить уведомления", isOn: $settings.notificationsEnabled)
+                Section("notifications".localized) {
+                    Toggle("enable_notifications".localized, isOn: $settings.notificationsEnabled)
                         .accessibilityIdentifier("notificationsToggle")
                     
                     if settings.notificationsEnabled {
-                        DatePicker("Время уведомлений",
+                        DatePicker("notification_time".localized,
                                    selection: $settings.notificationTime,
                                    displayedComponents: .hourAndMinute)
                             .accessibilityIdentifier("notificationTimePicker")
@@ -370,45 +366,45 @@ struct SettingsView: View {
                 }
                 
                 // MARK: Storage
-                Section("Хранилище") {
+                Section("storage".localized) {
                     Button(role: .destructive) {
                         showClearCacheAlert = true
                     } label: {
-                        Label("Очистить кэш", systemImage: "trash")
+                        Label("clear_cache".localized, systemImage: "trash")
                     }
                     .accessibilityIdentifier("clearCacheButton")
                 }
                 
                 // MARK: About
-                Section("О приложении") {
+                Section("about".localized) {
                     HStack {
-                        Text("Версия")
+                        Text("version".localized)
                         Spacer()
                         Text("1.0.0")
                             .foregroundColor(.secondary)
                     }
                 }
             }
-            .navigationTitle("Настройки")
+            .navigationTitle("settings_title".localized)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Готово") { dismiss() }
+                    Button("done".localized) { dismiss() }
                 }
             }
-            .alert("Очистка кэша", isPresented: $showClearCacheAlert) {
-                Button("Отмена", role: .cancel) { }
-                Button("Очистить", role: .destructive) {
+            .alert("clear_cache_title".localized, isPresented: $showClearCacheAlert) {
+                Button("cancel".localized, role: .cancel) { }
+                Button("clear_cache".localized, role: .destructive) {
                     settings.clearCache()
                     showSuccessMessage = true
                 }
             } message: {
-                Text("Это действие очистит кэш приложения. Продолжить?")
+                Text("clear_cache_confirm".localized)
             }
-            .alert("Кэш очищен", isPresented: $showSuccessMessage) {
-                Button("OK", role: .cancel) { }
+            .alert("cache_cleared_title".localized, isPresented: $showSuccessMessage) {
+                Button("ok".localized, role: .cancel) { }
             } message: {
-                Text("Кэш приложения успешно очищен.")
+                Text("cache_cleared_message".localized)
             }
         }
     }

@@ -358,10 +358,9 @@ final class DatabaseManager {
             name: row[colName],
             type: AccountType(rawValue: row[colType]) ?? .current,
             cardSubtype: row[colCardSubtype].flatMap { CardSubtype(rawValue: $0) },
-            balance: row[colBalance],
             currency: row[colCurrency],
+            balance: row[colBalance],
             isActive: row[colIsActive],
-            hasOverdraft: row[colHasOverdraft],
             overdraftLimit: row[colOverdraftLimit],
             createdAt: Date(timeIntervalSince1970: row[colAccountCreatedAt])
         )
@@ -412,11 +411,10 @@ final class DatabaseManager {
                 name: row[colBranchName],
                 address: row[colAddress],
                 phone: row[colPhoneNum],
+                workingHours: row[colWorkingHours],
                 latitude: row[colLatitude],
                 longitude: row[colLongitude],
-                workingHours: row[colWorkingHours],
-                rating: row[colRating],
-                services: row[colServices].components(separatedBy: ",")
+                services: row[colServices].components(separatedBy: ","), rating: row[colRating]
             )
         }
     }

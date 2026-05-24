@@ -14,10 +14,6 @@ struct CurrencyView: View {
     @EnvironmentObject var currencyVM: CurrencyViewModel
     @State private var showConverter = false
     
-    private func formatChangePercent(_ value: Double) -> String {
-        return String(format: "%.2f%%", abs(value))
-    }
-    
     var body: some View {
         NavigationStack {
             List {
@@ -25,7 +21,7 @@ struct CurrencyView: View {
                 Section {
                     Button(action: { showConverter.toggle() }) {
                         HStack {
-                            Label("Конвертер валют", systemImage: "arrow.left.arrow.right")
+                            Label("currency_converter".localized, systemImage: "arrow.left.arrow.right")
                             Spacer()
                             Image(systemName: showConverter ? "chevron.up" : "chevron.down")
                                 .foregroundColor(.gray)
@@ -37,12 +33,11 @@ struct CurrencyView: View {
                 // MARK: Converter Section
                 if showConverter {
                     Section {
-                        // From Currency Picker
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("Из")
+                            Text("from".localized)
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-                            Picker("Из", selection: $currencyVM.converterFromCode) {
+                            Picker("from".localized, selection: $currencyVM.converterFromCode) {
                                 ForEach(currencyVM.rates, id: \.code) { rate in
                                     Text("\(rate.code) - \(rate.name)").tag(rate.code)
                                 }
@@ -50,12 +45,11 @@ struct CurrencyView: View {
                             .pickerStyle(.menu)
                         }
                         
-                        // To Currency Picker
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("В")
+                            Text("to".localized)
                                 .font(.caption)
                                 .foregroundColor(.secondary)
-                            Picker("В", selection: $currencyVM.converterToCode) {
+                            Picker("to".localized, selection: $currencyVM.converterToCode) {
                                 ForEach(currencyVM.rates, id: \.code) { rate in
                                     Text("\(rate.code) - \(rate.name)").tag(rate.code)
                                 }
@@ -63,9 +57,8 @@ struct CurrencyView: View {
                             .pickerStyle(.menu)
                         }
                         
-                        // Amount Input
                         HStack {
-                            TextField("Сумма", text: $currencyVM.converterAmount)
+                            TextField("amount".localized, text: $currencyVM.converterAmount)
                                 .keyboardType(.decimalPad)
                                 .textFieldStyle(.roundedBorder)
                             
@@ -74,18 +67,16 @@ struct CurrencyView: View {
                                 .frame(width: 50)
                         }
                         
-                        // Convert Button
                         Button(action: currencyVM.convert) {
-                            Text("Конвертировать")
+                            Text("convert".localized)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 8)
                         }
                         .buttonStyle(.borderedProminent)
                         
-                        // Result
                         if !currencyVM.converterResult.isEmpty {
                             HStack {
-                                Text("Результат:")
+                                Text("result".localized + ":")
                                     .foregroundColor(.secondary)
                                 Spacer()
                                 Text("\(currencyVM.converterResult) \(currencyVM.converterToCode)")
@@ -99,7 +90,7 @@ struct CurrencyView: View {
                 }
                 
                 // MARK: Exchange Rates Section
-                Section("Курсы валют") {
+                Section("exchange_rates".localized) {
                     if currencyVM.isLoading {
                         HStack {
                             Spacer()
@@ -116,7 +107,7 @@ struct CurrencyView: View {
                     }
                 }
             }
-            .navigationTitle("Курсы валют")
+            .navigationTitle("tab_currency".localized)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: currencyVM.refreshRates) {
@@ -150,7 +141,6 @@ struct CurrencyRateRowView: View {
     
     var body: some View {
         HStack {
-            // Flag emoji (условный флаг по коду валюты)
             Text(flagForCurrency(rate.code))
                 .font(.title2)
             
@@ -182,7 +172,6 @@ struct CurrencyRateRowView: View {
                 }
             }
             
-            // Favorite Button
             Button(action: onToggleFavorite) {
                 Image(systemName: rate.isFavorite ? "star.fill" : "star")
                     .foregroundColor(rate.isFavorite ? .yellow : .gray)

@@ -37,7 +37,6 @@
 		8488AA262FC2C8080048A831 /* Exceptions for "BankingApp" folder in "BankingApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"/Localized: Resources/.gitkeep",
 				Info.plist,
 			);
 			target = 8488A9C32FC239820048A831 /* BankingApp */;

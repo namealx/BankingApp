@@ -84,6 +84,9 @@ final class SettingsManager: ObservableObject {
         notificationsEnabled = UserDefaults.standard.bool(forKey: Keys.notificationsEnabled)
         notificationTime = UserDefaults.standard.object(forKey: Keys.notificationTime) as? Date ?? Date()
         favoriteCurrencies = UserDefaults.standard.stringArray(forKey: Keys.favoriteCurrencies) ?? ["USD", "EUR"]
+        
+        // Применить язык при старте
+        applyLanguage()
     }
     
     // MARK: - Methods
@@ -100,7 +103,10 @@ final class SettingsManager: ObservableObject {
     }
     
     private func applyLanguage() {
-        UserDefaults.standard.set([language.locale], forKey: "AppleLanguages")
+        Bundle.setLanguage(language.rawValue)
+        UserDefaults.standard.set([language.rawValue], forKey: "AppleLanguages")
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name("LanguageChanged"), object: nil)
     }
     
     func clearCache() {
@@ -124,9 +130,9 @@ enum ColorSchemePreference: String, CaseIterable {
     
     var localizedName: String {
         switch self {
-        case .light: return "Светлая"
-        case .dark: return "Темная"
-        case .system: return "Системная"
+        case .light: return "theme_light".localized
+        case .dark: return "theme_dark".localized
+        case .system: return "theme_system".localized
         }
     }
 }
@@ -146,4 +152,17 @@ enum AppLanguage: String, CaseIterable {
     }
     
     var locale: String { rawValue }
+}
+
+// MARK: - Language Bundle
+class LanguageBundle: Bundle {
+    static var current: Bundle = Bundle.main
+}
+
+extension Bundle {
+    static func setLanguage(_ language: String) {
+        guard let path = Bundle.main.path(forResource: language, ofType: "lproj"),
+              let bundle = Bundle(path: path) else { return }
+        LanguageBundle.current = bundle
+    }
 }

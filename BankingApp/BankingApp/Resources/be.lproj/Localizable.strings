@@ -4,7 +4,7 @@
 
 /* Tab Bar */
 "tab_accounts" = "Рахункі";
-"tab_transfer" = "Пераказ";
+"tab_transfer" = "Перавод";
 "tab_currency" = "Курсы";
 "tab_map" = "Мапа";
 "tab_profile" = "Профіль";
@@ -122,3 +122,64 @@
 /* Alerts */
 "success" = "Паспяхова";
 "error" = "Памылка";
+
+/* Additional keys */
+"actions" = "Дзеянні";
+"account_number" = "Нумар рахунку";
+"open_date" = "Дата адкрыцця";
+"no_accounts" = "Няма рахункаў";
+"no_transactions" = "Няма аперацый";
+"transfer_funds" = "Перавесці сродкі";
+"confirm" = "Пацверджанне";
+"are_you_sure" = "Вы ўпэўнены?";
+"cannot_delete_overdraft" = "Немагчыма выдаліць рахунак з адмоўным балансам";
+"balance_format" = "Баланс: %.2f %@";
+"balance_zero" = "Баланс рахунку: 0.00";
+"funds_transfer_note" = "Сродкі будуць перанесены на іншы рахунак";
+"select_transfer_account" = "Абярыце рахунак для пераносу сродкаў";
+"transfer_limits_fmt" = "Ліміты: ад 0.01 да %.2f %@";
+"statistics" = "Статыстыка";
+"total_accounts" = "Усяго рахункаў";
+"active_accounts" = "Актыўных рахункаў";
+"new_password_hint" = "Новы пароль (мін. 6 сімвалаў)";
+"about" = "Пра прыкладанне";
+"version" = "Версія";
+"clear_cache_title" = "Ачыстка кэша";
+"clear_cache_confirm" = "Гэта дзеянне ачысціць кэш прыкладання. Працягнуць?";
+"cache_cleared_title" = "Кэш ачышчаны";
+"cache_cleared_message" = "Кэш прыкладання паспяхова ачышчаны.";
+
+/* Currency names */
+"currency_byn" = "Беларускі рубль";
+"currency_usd" = "Долар ЗША";
+"currency_eur" = "Еўра";
+"currency_rub" = "Расійскі рубль";
+"currency_gbp" = "Фунт стэрлінгаў";
+"currency_cny" = "Кітайскі юань";
+"currency_pln" = "Польскі злоты";
+
+/* Auth errors */
+"error_fill_name" = "Запоўніце поле ПІБ";
+"error_fill_phone" = "Запоўніце поле тэлефона";
+"error_fill_login" = "Запоўніце поле лагіна";
+
+/* Transfer errors */
+"error_select_sender" = "Абярыце рахунак адпраўніка";
+"error_select_receiver" = "Абярыце рахунак атрымальніка";
+"error_same_account" = "Нельга перавесці на той жа рахунак";
+"error_min_amount" = "Мінімальная сума пераказу 0.01 BYN";
+"error_max_amount" = "Максімальная сума пераказу 10 000 BYN";
+"error_insufficient_funds" = "Недастаткова сродкаў на рахунку";
+"transfer_success_message" = "Паспяхова перакінута %@ %@ на рахунак %@";
+
+/* Profile */
+/* Account actions */
+"error_enter_account_name" = "Увядзіце назву рахунку";
+"error_account_not_found" = "Рахунак не знойдзены";
+"account_created" = "Рахунак паспяхова створаны";
+"account_closed" = "Рахунак паспяхова закрыты";
+
+"error_user_not_found" = "Карыстальнік не знойдзены";
+"error_wrong_password" = "Няправільны бягучы пароль";
+"profile_updated" = "Профіль паспяхова абноўлены";
+"password_changed" = "Пароль паспяхова зменены";

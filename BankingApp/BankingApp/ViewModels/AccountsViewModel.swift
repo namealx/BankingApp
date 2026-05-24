@@ -21,7 +21,7 @@ final class AccountsViewModel: ObservableObject {
     
     @Published var newAccountName: String = ""
     @Published var newAccountType: AccountType = .current
-    @Published var newCardSubtype: CardSubtype = .salary
+    @Published var newCardSubtype: CardSubtype = .savings
     @Published var newAccountCurrency: String = "BYN"
     
     private let db = DatabaseManager.shared
@@ -63,23 +63,20 @@ final class AccountsViewModel: ObservableObject {
     
     func createAccount(userId: Int64) {
         guard !newAccountName.isEmpty else {
-            errorMessage = "Введите название счета"
+            errorMessage = "error_enter_account_name".localized
             return
         }
         
         isLoading = true
         errorMessage = ""
         
-        let isSalary = newAccountType == .card && newCardSubtype == .salary
         let account = Account(
             userId: userId,
             name: newAccountName,
             type: newAccountType,
             cardSubtype: newAccountType == .card ? newCardSubtype : nil,
-            balance: 0,
-            currency: newAccountCurrency,
-            hasOverdraft: isSalary,
-            overdraftLimit: isSalary ? 500.0 : 0.0
+            currency: newAccountCurrency, balance: 0,
+            overdraftLimit: 0.0
         )
         
         DispatchQueue.global().async { [weak self] in
@@ -90,7 +87,7 @@ final class AccountsViewModel: ObservableObject {
                         self?.loadAccounts(userId: userId)
                     }
                     self?.newAccountName = ""
-                    self?.successMessage = "Счет успешно создан"
+                    self?.successMessage = "account_created".localized
                     self?.isLoading = false
                 }
             } catch {
@@ -112,7 +109,7 @@ final class AccountsViewModel: ObservableObject {
             
             guard let accountToDelete = self.accounts.first(where: { $0.id == id }) else {
                 DispatchQueue.main.async {
-                    self.errorMessage = "Счет не найден"
+                    self.errorMessage = "error_account_not_found".localized
                     self.isLoading = false
                 }
                 return
@@ -120,7 +117,7 @@ final class AccountsViewModel: ObservableObject {
             
             if accountToDelete.hasOverdraft && accountToDelete.balance < 0 {
                 DispatchQueue.main.async {
-                    self.errorMessage = "Невозможно удалить счет с отрицательным балансом"
+                    self.errorMessage = "cannot_delete_overdraft".localized
                     self.isLoading = false
                 }
                 return
@@ -147,7 +144,7 @@ final class AccountsViewModel: ObservableObject {
                 try self.db.setAccountInactive(id: id)
                 DispatchQueue.main.async {
                     self.accounts.removeAll { $0.id == id }
-                    self.successMessage = "Счет успешно закрыт"
+                    self.successMessage = "account_closed".localized
                     self.isLoading = false
                     self.objectWillChange.send()
                     completion?()

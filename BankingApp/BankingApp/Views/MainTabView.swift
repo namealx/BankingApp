@@ -27,7 +27,7 @@ struct MainTabView: View {
                 .environmentObject(transferVM)
                 .environmentObject(authVM)
                 .tabItem {
-                    Label("Счета", systemImage: "creditcard")
+                    Label("tab_accounts".localized, systemImage: "creditcard")
                 }
                 .tag(0)
             
@@ -36,21 +36,21 @@ struct MainTabView: View {
                 .environmentObject(transferVM)
                 .environmentObject(authVM)
                 .tabItem {
-                    Label("Перевод", systemImage: "arrow.left.arrow.right")
+                    Label("tab_transfer".localized, systemImage: "arrow.left.arrow.right")
                 }
                 .tag(1)
             
             CurrencyView()
                 .environmentObject(currencyVM)
                 .tabItem {
-                    Label("Курсы", systemImage: "chart.line.uptrend.xyaxis")
+                    Label("tab_currency".localized, systemImage: "chart.line.uptrend.xyaxis")
                 }
                 .tag(2)
             
             BranchMapView()
                 .environmentObject(branchVM)
                 .tabItem {
-                    Label("Карта", systemImage: "map")
+                    Label("tab_map".localized, systemImage: "map")
                 }
                 .tag(3)
             
@@ -58,7 +58,7 @@ struct MainTabView: View {
                 .environmentObject(profileVM)
                 .environmentObject(authVM)
                 .tabItem {
-                    Label("Профиль", systemImage: "person.circle")
+                    Label("tab_profile".localized, systemImage: "person.circle")
                 }
                 .tag(4)
         }

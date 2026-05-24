@@ -52,7 +52,7 @@ struct BranchMapView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Отделения")
+            .navigationTitle("branches".localized)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showList = true }) {
@@ -73,8 +73,8 @@ struct BranchMapView: View {
                 BranchListView()
                     .environmentObject(branchVM)
             }
-            .alert("Ошибка геолокации", isPresented: .constant(!branchVM.errorMessage.isEmpty)) {
-                Button("OK") { branchVM.errorMessage = "" }
+            .alert("error".localized, isPresented: .constant(!branchVM.errorMessage.isEmpty)) {
+                Button("ok".localized) { branchVM.errorMessage = "" }
             } message: {
                 Text(branchVM.errorMessage)
             }
@@ -156,7 +156,7 @@ struct BranchCardView: View {
             }
             
             Button(action: onRoute) {
-                Label("Проложить маршрут", systemImage: "arrow.triangle.turn.up.right.circle")
+                Label("build_route".localized, systemImage: "arrow.triangle.turn.up.right.circle")
                     .frame(maxWidth: .infinity)
                     .padding(10)
                     .background(Color.blue)
@@ -190,7 +190,7 @@ struct BranchListView: View {
                             Text(branch.name).font(.headline)
                             Spacer()
                             if branchVM.nearestBranch?.id == branch.id {
-                                Text("Ближайшее")
+                                Text("nearest".localized)
                                     .font(.caption2)
                                     .padding(.horizontal, 6)
                                     .padding(.vertical, 2)
@@ -203,11 +203,11 @@ struct BranchListView: View {
                     }
                 }
             }
-            .searchable(text: $branchVM.searchText, prompt: "Поиск отделений...")
-            .navigationTitle("Отделения")
+            .searchable(text: $branchVM.searchText, prompt: "search_branch".localized)
+            .navigationTitle("branches".localized)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Закрыть") { dismiss() }
+                    Button("close".localized) { dismiss() }
                 }
             }
         }
