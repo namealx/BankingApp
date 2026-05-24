@@ -246,6 +246,74 @@ final class DatabaseManager {
             print("DatabaseManager: insertDemoData error \(error)")
         }
     }
+    
+    // MARK: - User CRUD Operations
+    
+    func register(user: User) throws -> Int64 {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        return try db.run(usersTable.insert(
+            colFullName <- user.fullName,
+            colEmail <- user.email,
+            colPhone <- user.phone,
+            colLogin <- user.login,
+            colPassword <- user.password,
+            colAvatarData <- user.avatarData,
+            colCreatedAt <- user.createdAt.timeIntervalSince1970
+        ))
+    }
+    
+    func login(login: String, password: String) throws -> User? {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        let query = usersTable.filter(colLogin == login && colPassword == password)
+        if let row = try db.pluck(query) {
+            return userFromRow(row)
+        }
+        return nil
+    }
+    
+    func getUser(id: Int64) throws -> User? {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        let query = usersTable.filter(colId == id)
+        if let row = try db.pluck(query) {
+            return userFromRow(row)
+        }
+        return nil
+    }
+    
+    func updateUser(_ user: User) throws {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        let query = usersTable.filter(colId == user.id)
+        try db.run(query.update(
+            colFullName <- user.fullName,
+            colEmail <- user.email,
+            colPhone <- user.phone,
+            colAvatarData <- user.avatarData
+        ))
+    }
+    
+    func updatePassword(userId: Int64, newPassword: String) throws {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        let query = usersTable.filter(colId == userId)
+        try db.run(query.update(colPassword <- newPassword))
+    }
+    
+    func isLoginExists(_ login: String) throws -> Bool {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        return try db.scalar(usersTable.filter(colLogin == login).count) > 0
+    }
+    
+    private func userFromRow(_ row: Row) -> User {
+        User(
+            id: row[colId],
+            fullName: row[colFullName],
+            email: row[colEmail],
+            phone: row[colPhone],
+            login: row[colLogin],
+            password: row[colPassword],
+            avatarData: row[colAvatarData],
+            createdAt: Date(timeIntervalSince1970: row[colCreatedAt])
+        )
+    }
 }
 
 // MARK: - Database Error
