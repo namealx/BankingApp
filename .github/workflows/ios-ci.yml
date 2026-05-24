@@ -10,50 +10,51 @@ jobs:
   build-and-test:
     name: Build and Test
     runs-on: macos-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      
+
       - name: Select Xcode
-        run: sudo xcode-select -switch /Applications/Xcode_26.5.app
+        run: sudo xcode-select -switch /Applications/Xcode_16.3.app
       
       - name: Show Xcode version
         run: xcodebuild -version
-      
+
+      - name: Install xcpretty
+        run: gem install xcpretty --no-document
+
       - name: Cache Swift Package Manager
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
-          path: DerivedData
+          path: ~/Library/Developer/Xcode/DerivedData
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
           restore-keys: |
             ${{ runner.os }}-spm-
-      
+
       - name: Build and Test
         run: |
           xcodebuild test \
             -scheme BankingApp \
-            -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.5' \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.4' \
             -resultBundlePath TestResults \
             -enableCodeCoverage YES \
-            -only-testing:BankingAppTests \
-            -only-testing:BankingAppUITests \
             2>&1 | xcpretty
-      
+
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results
           path: TestResults
-      
+
       - name: Upload coverage report
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         if: always()
         with:
           file: ./TestResults/CodeCoverage.xccoverage
           fail_ci_if_error: false
-      
+
       - name: Build for production
         if: github.ref == 'refs/heads/main'
         run: |
