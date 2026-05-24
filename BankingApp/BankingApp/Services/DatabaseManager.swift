@@ -421,7 +421,7 @@ final class DatabaseManager {
         }
     }
 }
-}
+
 
 // MARK: - Database Error
 enum DatabaseError: LocalizedError {

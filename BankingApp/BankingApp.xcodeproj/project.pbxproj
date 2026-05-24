@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8488AA5F2FC2D0380048A831 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 8488AA5E2FC2D0380048A831 /* SQLite */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		8488A9D22FC239850048A831 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -71,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8488AA5F2FC2D0380048A831 /* SQLite in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +102,7 @@
 				8488A9C62FC239820048A831 /* BankingApp */,
 				8488A9D42FC239850048A831 /* BankingAppTests */,
 				8488A9DE2FC239850048A831 /* BankingAppUITests */,
+				8488AA5D2FC2D0380048A831 /* Frameworks */,
 				8488A9C52FC239820048A831 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -109,6 +115,13 @@
 				8488A9DB2FC239850048A831 /* BankingAppUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		8488AA5D2FC2D0380048A831 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -131,6 +144,7 @@
 			);
 			name = BankingApp;
 			packageProductDependencies = (
+				8488AA5E2FC2D0380048A831 /* SQLite */,
 			);
 			productName = BankingApp;
 			productReference = 8488A9C42FC239820048A831 /* BankingApp.app */;
@@ -613,6 +627,14 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8488AA5E2FC2D0380048A831 /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8488A9EE2FC23BBC0048A831 /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			productName = SQLite;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8488A9BC2FC239820048A831 /* Project object */;
 }
