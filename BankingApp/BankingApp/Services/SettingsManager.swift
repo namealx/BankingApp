@@ -15,9 +15,6 @@ final class SettingsManager: ObservableObject {
     
     // MARK: - Singleton
     static let shared = SettingsManager()
-    private init() {
-        loadSettings()
-    }
     
     // MARK: - Keys
     private enum Keys {
@@ -30,28 +27,11 @@ final class SettingsManager: ObservableObject {
     }
     
     // MARK: - Published Properties
-    @Published var colorScheme: ColorSchemePreference {
-        didSet { UserDefaults.standard.set(colorScheme.rawValue, forKey: Keys.colorScheme) }
-    }
-    
-    @Published var language: AppLanguage {
-        didSet {
-            UserDefaults.standard.set(language.rawValue, forKey: Keys.language)
-            applyLanguage()
-        }
-    }
-    
-    @Published var notificationsEnabled: Bool {
-        didSet { UserDefaults.standard.set(notificationsEnabled, forKey: Keys.notificationsEnabled) }
-    }
-    
-    @Published var notificationTime: Date {
-        didSet { UserDefaults.standard.set(notificationTime, forKey: Keys.notificationTime) }
-    }
-    
-    @Published var favoriteCurrencies: [String] {
-        didSet { UserDefaults.standard.set(favoriteCurrencies, forKey: Keys.favoriteCurrencies) }
-    }
+    @Published var colorScheme: ColorSchemePreference
+    @Published var language: AppLanguage
+    @Published var notificationsEnabled: Bool
+    @Published var notificationTime: Date
+    @Published var favoriteCurrencies: [String]
     
     // MARK: - Current User Session
     var currentUserId: Int64? {
@@ -68,8 +48,8 @@ final class SettingsManager: ObservableObject {
         }
     }
     
-    // MARK: - Load Settings
-    private func loadSettings() {
+    // MARK: - Init
+    private init() {
         let schemePref = UserDefaults.standard.string(forKey: Keys.colorScheme) ?? ColorSchemePreference.system.rawValue
         colorScheme = ColorSchemePreference(rawValue: schemePref) ?? .system
         
@@ -96,6 +76,18 @@ final class SettingsManager: ObservableObject {
         } else {
             favoriteCurrencies.append(code)
         }
+        UserDefaults.standard.set(favoriteCurrencies, forKey: Keys.favoriteCurrencies)
+    }
+    
+    func updateNotificationSettings() {
+        UserDefaults.standard.set(notificationsEnabled, forKey: Keys.notificationsEnabled)
+        UserDefaults.standard.set(notificationTime, forKey: Keys.notificationTime)
+    }
+    
+    func updateAppearance() {
+        UserDefaults.standard.set(colorScheme.rawValue, forKey: Keys.colorScheme)
+        UserDefaults.standard.set(language.rawValue, forKey: Keys.language)
+        applyLanguage()
     }
     
     private func applyLanguage() {
