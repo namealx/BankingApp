@@ -1,7 +1,124 @@
-/* 
-  Localizable.strings
-  BankingApp
+/* App Name */
+"app_name" = "Банковское приложение";
+"login_subtitle" = "Ваш надежный финансовый помощник";
 
-  Created by Admin on 24.05.2026.
-  
-*/
+/* Tab Bar */
+"tab_accounts" = "Счета";
+"tab_transfer" = "Перевод";
+"tab_currency" = "Курсы";
+"tab_map" = "Карта";
+"tab_profile" = "Профиль";
+
+/* Auth */
+"login_placeholder" = "Логин";
+"password_placeholder" = "Пароль";
+"login_button" = "Войти";
+"register_button" = "Зарегистрироваться";
+"no_account" = "Нет аккаунта? Зарегистрироваться";
+"use_demo" = "Использовать демо-аккаунт";
+"register_title" = "Регистрация";
+"section_personal" = "Личная информация";
+"section_credentials" = "Данные для входа";
+"full_name_placeholder" = "ФИО";
+"email_placeholder" = "Email";
+"phone_placeholder" = "Телефон";
+"confirm_password_placeholder" = "Подтвердите пароль";
+"cancel" = "Отмена";
+
+/* Errors */
+"error_fill_fields" = "Заполните все поля";
+"error_invalid_credentials" = "Неверный логин или пароль";
+"error_login_exists" = "Пользователь с таким логином уже существует";
+"error_invalid_email" = "Неверный email адрес";
+"error_password_short" = "Пароль должен содержать минимум 6 символов";
+"error_passwords_mismatch" = "Пароли не совпадают";
+
+/* Accounts */
+"total_balance" = "Общий баланс";
+"my_accounts" = "Мои счета";
+"balance" = "Баланс";
+"available_with_overdraft" = "Доступно с овердрафтом: %.2f BYN";
+"new_account" = "Новый счет";
+"create_account" = "Создать счет";
+"account_info" = "Информация о счете";
+"account_name" = "Название счета";
+"account_type" = "Тип счета";
+"account_type_current" = "Текущий";
+"account_type_savings" = "Сберегательный";
+"account_type_credit" = "Кредитный";
+"account_type_card" = "Карта";
+"card_subtype" = "Тип карты";
+"currency" = "Валюта";
+"overdraft" = "Овердрафт: %.0f BYN";
+"status" = "Статус";
+"account_status" = "Статус счета";
+"active" = "Активен";
+"closed" = "Закрыт";
+"close_account_title" = "Закрыть счет";
+"close_account_confirm" = "Вы уверены, что хотите закрыть счет '%@'?";
+"close" = "Закрыть";
+
+/* Transactions */
+"transactions" = "Операции";
+"filter" = "Фильтр";
+"all" = "Все";
+"transaction_income" = "Доход";
+"transaction_expense" = "Расход";
+"transaction_transfer" = "Перевод";
+
+/* Transfer */
+"from_account" = "Со счета";
+"to_account" = "На счет";
+"select_account" = "Выберите счет";
+"select" = "Выбрать";
+"amount" = "Сумма";
+"transfer_limits" = "Мин: 0.01, Макс: 10,000 BYN";
+"transfer_button" = "Перевести";
+"transfer_success_title" = "Перевод выполнен";
+"transfer_to" = "Перевод на %@";
+"transfer_from" = "Перевод с %@";
+
+/* Currency */
+"currency_converter" = "Конвертер валют";
+"exchange_rates" = "Курсы валют";
+"from" = "Из";
+"to" = "В";
+"convert" = "Конвертировать";
+"result" = "Результат";
+"refresh" = "Обновить";
+
+/* Map */
+"build_route" = "Построить маршрут";
+"branches" = "Отделения";
+"search_branch" = "Поиск отделений...";
+"nearest" = "Ближайшее";
+
+/* Profile */
+"account" = "Аккаунт";
+"edit_profile" = "Редактировать профиль";
+"change_password" = "Изменить пароль";
+"settings_title" = "Настройки";
+"logout" = "Выйти";
+"logout_confirm" = "Вы уверены, что хотите выйти?";
+"edit_profile_title" = "Редактирование профиля";
+"save" = "Сохранить";
+"current_password" = "Текущий пароль";
+"new_password" = "Новый пароль";
+"app_settings" = "Настройки приложения";
+"appearance" = "Внешний вид";
+"theme" = "Тема";
+"theme_light" = "Светлая";
+"theme_dark" = "Темная";
+"theme_system" = "Системная";
+"language" = "Язык";
+"notifications" = "Уведомления";
+"enable_notifications" = "Включить уведомления";
+"notification_time" = "Время уведомлений";
+"storage" = "Хранилище";
+"clear_cache" = "Очистить кэш";
+"done" = "Готово";
+"ok" = "OK";
+
+/* Alerts */
+"success" = "Успешно";
+"error" = "Ошибка";
