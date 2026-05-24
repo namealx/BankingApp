@@ -2,7 +2,7 @@
 //  Models.swift
 //  BankingApp
 //
-//  Created by Nikita Yuranov on 22.05.2026
+//  Created by Nikita Yuranov on 24.05.2026
 //  Group: 12b
 //
 
@@ -32,3 +32,26 @@ struct User: Identifiable, Codable {
     }
 }
 
+// MARK: - Account Type
+enum AccountType: String, CaseIterable, Codable {
+    case current = "current"
+    case savings = "savings"
+    case credit = "credit"
+    case card = "card"
+
+    var localizedName: String {
+        switch self {
+        case .current: return "Текущий"
+        case .savings: return "Сберегательный"
+        case .credit: return "Кредитный"
+        case .card: return "Карта"
+        }
+    }
+}
+
+// MARK: - Card Account Subtype
+enum CardSubtype: String, CaseIterable, Codable {
+    case salary = "salary"
+    case savings = "savings"
+    case credit = "credit"
+}
