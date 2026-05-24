@@ -1,0 +1,124 @@
+/* App Name */
+"app_name" = "BankingApp";
+"login_subtitle" = "Your reliable financial assistant";
+
+/* Tab Bar */
+"tab_accounts" = "Accounts";
+"tab_transfer" = "Transfer";
+"tab_currency" = "Currency";
+"tab_map" = "Map";
+"tab_profile" = "Profile";
+
+/* Auth */
+"login_placeholder" = "Username";
+"password_placeholder" = "Password";
+"login_button" = "Login";
+"register_button" = "Register";
+"no_account" = "Don't have an account? Register";
+"use_demo" = "Use demo account";
+"register_title" = "Registration";
+"section_personal" = "Personal Information";
+"section_credentials" = "Credentials";
+"full_name_placeholder" = "Full Name";
+"email_placeholder" = "Email";
+"phone_placeholder" = "Phone";
+"confirm_password_placeholder" = "Confirm Password";
+"cancel" = "Cancel";
+
+/* Errors */
+"error_fill_fields" = "Please fill in all fields";
+"error_invalid_credentials" = "Invalid username or password";
+"error_login_exists" = "User with this login already exists";
+"error_invalid_email" = "Invalid email address";
+"error_password_short" = "Password must be at least 6 characters";
+"error_passwords_mismatch" = "Passwords do not match";
+
+/* Accounts */
+"total_balance" = "Total Balance";
+"my_accounts" = "My Accounts";
+"balance" = "Balance";
+"available_with_overdraft" = "Available with overdraft: %.2f BYN";
+"new_account" = "New Account";
+"create_account" = "Create Account";
+"account_info" = "Account Information";
+"account_name" = "Account Name";
+"account_type" = "Account Type";
+"account_type_current" = "Current";
+"account_type_savings" = "Savings";
+"account_type_credit" = "Credit";
+"account_type_card" = "Card";
+"card_subtype" = "Card Type";
+"currency" = "Currency";
+"overdraft" = "Overdraft: %.0f BYN";
+"status" = "Status";
+"account_status" = "Account Status";
+"active" = "Active";
+"closed" = "Closed";
+"close_account_title" = "Close Account";
+"close_account_confirm" = "Are you sure you want to close account '%@'?";
+"close" = "Close";
+
+/* Transactions */
+"transactions" = "Transactions";
+"filter" = "Filter";
+"all" = "All";
+"transaction_income" = "Income";
+"transaction_expense" = "Expense";
+"transaction_transfer" = "Transfer";
+
+/* Transfer */
+"from_account" = "From Account";
+"to_account" = "To Account";
+"select_account" = "Select account";
+"select" = "Select";
+"amount" = "Amount";
+"transfer_limits" = "Min: 0.01, Max: 10,000 BYN";
+"transfer_button" = "Transfer";
+"transfer_success_title" = "Transfer Complete";
+"transfer_to" = "Transfer to %@";
+"transfer_from" = "Transfer from %@";
+
+/* Currency */
+"currency_converter" = "Currency Converter";
+"exchange_rates" = "Exchange Rates";
+"from" = "From";
+"to" = "To";
+"convert" = "Convert";
+"result" = "Result";
+"refresh" = "Refresh";
+
+/* Map */
+"build_route" = "Build Route";
+"branches" = "Branches";
+"search_branch" = "Search branches...";
+"nearest" = "Nearest";
+
+/* Profile */
+"account" = "Account";
+"edit_profile" = "Edit Profile";
+"change_password" = "Change Password";
+"settings_title" = "Settings";
+"logout" = "Logout";
+"logout_confirm" = "Are you sure you want to logout?";
+"edit_profile_title" = "Edit Profile";
+"save" = "Save";
+"current_password" = "Current Password";
+"new_password" = "New Password";
+"app_settings" = "App Settings";
+"appearance" = "Appearance";
+"theme" = "Theme";
+"theme_light" = "Light";
+"theme_dark" = "Dark";
+"theme_system" = "System";
+"language" = "Language";
+"notifications" = "Notifications";
+"enable_notifications" = "Enable Notifications";
+"notification_time" = "Notification Time";
+"storage" = "Storage";
+"clear_cache" = "Clear Cache";
+"done" = "Done";
+"ok" = "OK";
+
+/* Alerts */
+"success" = "Success";
+"error" = "Error";
