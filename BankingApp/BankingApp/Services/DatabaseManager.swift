@@ -366,6 +366,61 @@ final class DatabaseManager {
             createdAt: Date(timeIntervalSince1970: row[colAccountCreatedAt])
         )
     }
+    
+    // MARK: - Transaction CRUD Operations
+    
+    func getTransactions(accountId: Int64) throws -> [Transaction] {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        let query = transactionsTable.filter(colAccountId == accountId)
+            .order(colTxCreatedAt.desc)
+        return try db.prepare(query).map { transactionFromRow($0) }
+    }
+    
+    func addTransaction(_ tx: Transaction) throws -> Int64 {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        return try db.run(transactionsTable.insert(
+            colAccountId <- tx.accountId,
+            colTxType <- tx.type.rawValue,
+            colAmount <- tx.amount,
+            colTxCurrency <- tx.currency,
+            colDescription <- tx.description,
+            colRelatedAccountId <- tx.relatedAccountId,
+            colTxCreatedAt <- tx.createdAt.timeIntervalSince1970
+        ))
+    }
+    
+    private func transactionFromRow(_ row: Row) -> Transaction {
+        Transaction(
+            id: row[colId],
+            accountId: row[colAccountId],
+            type: TransactionType(rawValue: row[colTxType]) ?? .expense,
+            amount: row[colAmount],
+            currency: row[colTxCurrency],
+            description: row[colDescription],
+            relatedAccountId: row[colRelatedAccountId],
+            createdAt: Date(timeIntervalSince1970: row[colTxCreatedAt])
+        )
+    }
+    
+    // MARK: - Branch CRUD Operations
+    
+    func getBranches() throws -> [Branch] {
+        guard let db = db else { throw DatabaseError.connectionFailed }
+        return try db.prepare(branchesTable).map { row in
+            Branch(
+                id: row[colBranchId],
+                name: row[colBranchName],
+                address: row[colAddress],
+                phone: row[colPhoneNum],
+                latitude: row[colLatitude],
+                longitude: row[colLongitude],
+                workingHours: row[colWorkingHours],
+                rating: row[colRating],
+                services: row[colServices].components(separatedBy: ",")
+            )
+        }
+    }
+}
 }
 
 // MARK: - Database Error
