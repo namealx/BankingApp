@@ -83,7 +83,64 @@ final class DatabaseManager {
     
     // MARK: - Create Tables
     private func createTables() {
-        
+        guard let db = db else { return }
+        do {
+            // Users table
+            try db.run(usersTable.create(ifNotExists: true) { t in
+                t.column(colId, primaryKey: .autoincrement)
+                t.column(colFullName)
+                t.column(colEmail, unique: true)
+                t.column(colPhone)
+                t.column(colLogin, unique: true)
+                t.column(colPassword)
+                t.column(colAvatarData)
+                t.column(colCreatedAt)
+            })
+            
+            // Accounts table
+            try db.run(accountsTable.create(ifNotExists: true) { t in
+                t.column(colId, primaryKey: .autoincrement)
+                t.column(colUserId)
+                t.column(colName)
+                t.column(colType)
+                t.column(colCardSubtype)
+                t.column(colBalance)
+                t.column(colCurrency)
+                t.column(colIsActive)
+                t.column(colHasOverdraft)
+                t.column(colOverdraftLimit)
+                t.column(colAccountCreatedAt)
+            })
+            
+            // Transactions table
+            try db.run(transactionsTable.create(ifNotExists: true) { t in
+                t.column(colId, primaryKey: .autoincrement)
+                t.column(colAccountId)
+                t.column(colTxType)
+                t.column(colAmount)
+                t.column(colTxCurrency)
+                t.column(colDescription)
+                t.column(colRelatedAccountId)
+                t.column(colTxCreatedAt)
+            })
+            
+            // Branches table
+            try db.run(branchesTable.create(ifNotExists: true) { t in
+                t.column(colBranchId, primaryKey: .autoincrement)
+                t.column(colBranchName)
+                t.column(colAddress)
+                t.column(colPhoneNum)
+                t.column(colLatitude)
+                t.column(colLongitude)
+                t.column(colWorkingHours)
+                t.column(colRating)
+                t.column(colServices)
+            })
+            
+            print("✅ All tables created successfully")
+        } catch {
+            print("DatabaseManager: createTables error \(error)")
+        }
     }
     
     // MARK: - Insert Demo Data
