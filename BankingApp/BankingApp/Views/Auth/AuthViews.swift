@@ -2,7 +2,7 @@
 //  AuthViews.swift
 //  BankingApp
 //
-//  Created by Nikita Yuranov on 22.05.2026
+//  Created by Nikita Yuranov on 24.05.2026
 //  Group: 12b
 //
 
@@ -35,10 +35,12 @@ struct LoginView: View {
                     TextField("Логин", text: $authVM.login)
                         .textFieldStyle(.roundedBorder)
                         .autocapitalization(.none)
+                        .disabled(authVM.isLoading)
                         .accessibilityIdentifier("loginField")
                     
                     SecureField("Пароль", text: $authVM.password)
                         .textFieldStyle(.roundedBorder)
+                        .disabled(authVM.isLoading)
                         .accessibilityIdentifier("passwordField")
                     
                     if !authVM.errorMessage.isEmpty {
@@ -52,14 +54,21 @@ struct LoginView: View {
                 
                 // MARK: - Login Button
                 Button(action: authVM.performLogin) {
-                    Text("Войти")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(12)
+                    if authVM.isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    } else {
+                        Text("Войти")
+                            .fontWeight(.semibold)
+                    }
                 }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(12)
                 .padding(.horizontal)
+                .disabled(authVM.isLoading)
                 .accessibilityIdentifier("loginButton")
                 
                 // MARK: - Demo Button
@@ -71,6 +80,7 @@ struct LoginView: View {
                         .font(.caption)
                         .foregroundColor(.blue)
                 }
+                .disabled(authVM.isLoading)
                 .accessibilityIdentifier("demoButton")
                 
                 Spacer()
@@ -81,6 +91,7 @@ struct LoginView: View {
                         .foregroundColor(.blue)
                 }
                 .padding(.bottom)
+                .disabled(authVM.isLoading)
                 .accessibilityIdentifier("registerNavigationButton")
             }
             .navigationBarHidden(true)
@@ -103,15 +114,18 @@ struct RegisterView: View {
                 // MARK: - Personal Info
                 Section("Личная информация") {
                     TextField("ФИО", text: $authVM.fullName)
+                        .disabled(authVM.isLoading)
                         .accessibilityIdentifier("fullNameField")
                     
                     TextField("Email", text: $authVM.email)
                         .autocapitalization(.none)
                         .keyboardType(.emailAddress)
+                        .disabled(authVM.isLoading)
                         .accessibilityIdentifier("emailField")
                     
                     TextField("Телефон", text: $authVM.phone)
                         .keyboardType(.phonePad)
+                        .disabled(authVM.isLoading)
                         .accessibilityIdentifier("phoneField")
                 }
                 
@@ -119,12 +133,15 @@ struct RegisterView: View {
                 Section("Данные для входа") {
                     TextField("Логин", text: $authVM.login)
                         .autocapitalization(.none)
+                        .disabled(authVM.isLoading)
                         .accessibilityIdentifier("regLoginField")
                     
                     SecureField("Пароль", text: $authVM.password)
+                        .disabled(authVM.isLoading)
                         .accessibilityIdentifier("regPasswordField")
                     
                     SecureField("Подтвердите пароль", text: $authVM.confirmPassword)
+                        .disabled(authVM.isLoading)
                         .accessibilityIdentifier("confirmPasswordField")
                 }
                 
@@ -143,11 +160,15 @@ struct RegisterView: View {
                         authVM.performRegister()
                         if authVM.isLoggedIn { dismiss() }
                     }
+                    .disabled(authVM.isLoading)
                     .accessibilityIdentifier("registerButton")
                 }
             }
             .navigationTitle("Регистрация")
+            .navigationBarItems(leading: Button("Отмена") {
+                authVM.resetForm()
+                dismiss()
+            })
         }
     }
 }
-
