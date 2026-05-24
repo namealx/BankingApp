@@ -9,10 +9,8 @@
 import Foundation
 import Combine
 
-// MARK: - TransferViewModel
 final class TransferViewModel: ObservableObject {
     
-    // MARK: - Published Properties
     @Published var fromAccount: Account?
     @Published var toAccount: Account?
     @Published var amountString: String = ""
@@ -21,16 +19,24 @@ final class TransferViewModel: ObservableObject {
     @Published var isTransferComplete: Bool = false
     @Published var isProcessing: Bool = false
     
-    // MARK: - Callbacks
-    var onTransferSuccess: (() -> Void)?
+    var onTransferSuccess: ((Double, Double, Int64, Int64) -> Void)?
     
-    // MARK: - Computed Properties
-    var amount: Double { Double(amountString.replacingOccurrences(of: ",", with: ".")) ?? 0 }
+    var amount: Double {
+        Double(amountString.replacingOccurrences(of: ",", with: ".")) ?? 0
+    }
     
-    // MARK: - Dependencies
     private let db = DatabaseManager.shared
     
-    // MARK: - Currency Rates
+    private func formatAmount(_ value: Double) -> String {
+        if value.truncatingRemainder(dividingBy: 1) == 0 {
+            return String(format: "%.0f", value)
+        } else if value * 10 - floor(value * 10) < 0.001 {
+            return String(format: "%.1f", value)
+        } else {
+            return String(format: "%.2f", value)
+        }
+    }
+    
     private func rateToBYN(_ currency: String) -> Double {
         let rates: [String: Double] = [
             "BYN": 1.0,
@@ -44,14 +50,14 @@ final class TransferViewModel: ObservableObject {
         return rates[currency] ?? 1.0
     }
     
-    // MARK: - Perform Transfer
     func performTransfer(accounts: [Account]) {
-        // Валидация
+        guard !isProcessing else { return }
         guard validate(accounts: accounts) else { return }
         guard let from = fromAccount, let to = toAccount else { return }
         
         isProcessing = true
         errorMessage = ""
+        isTransferComplete = false
         
         DispatchQueue.global().async { [weak self] in
             guard let self = self else { return }
@@ -65,11 +71,9 @@ final class TransferViewModel: ObservableObject {
                 let newFromBalance = from.balance - self.amount
                 let newToBalance = to.balance + amountToReceive
                 
-                // Обновление балансов
                 try self.db.updateAccountBalance(id: from.id, balance: newFromBalance)
                 try self.db.updateAccountBalance(id: to.id, balance: newToBalance)
                 
-                // Запись транзакции для отправителя
                 let txFrom = Transaction(
                     accountId: from.id,
                     type: .transfer,
@@ -80,7 +84,6 @@ final class TransferViewModel: ObservableObject {
                 )
                 _ = try self.db.addTransaction(txFrom)
                 
-                // Запись транзакции для получателя
                 let txTo = Transaction(
                     accountId: to.id,
                     type: .income,
@@ -92,57 +95,51 @@ final class TransferViewModel: ObservableObject {
                 _ = try self.db.addTransaction(txTo)
                 
                 DispatchQueue.main.async {
-                    self.successMessage = String(format: "Успешно переведено %.2f %@ на счет %@", self.amount, from.currency, to.name)
+                    let formattedAmount = self.formatAmount(self.amount)
+                    self.successMessage = String(format: "Успешно переведено %@ %@ на счет %@", formattedAmount, from.currency, to.name)
                     self.isTransferComplete = true
                     self.isProcessing = false
-                    self.onTransferSuccess?()
+                    
+                    self.onTransferSuccess?(newFromBalance, newToBalance, from.id, to.id)
                 }
-                
             } catch {
                 DispatchQueue.main.async {
                     self.errorMessage = error.localizedDescription
                     self.isProcessing = false
+                    self.isTransferComplete = false
                 }
             }
         }
     }
     
-    // MARK: - Validation
     private func validate(accounts: [Account]) -> Bool {
         guard fromAccount != nil else {
             errorMessage = "Выберите счет отправителя"
             return false
         }
-        
         guard toAccount != nil else {
             errorMessage = "Выберите счет получателя"
             return false
         }
-        
         guard fromAccount?.id != toAccount?.id else {
             errorMessage = "Нельзя перевести на тот же счет"
             return false
         }
-        
         guard amount >= 0.01 else {
             errorMessage = "Минимальная сумма перевода 0.01 BYN"
             return false
         }
-        
         guard amount <= 10000 else {
-            errorMessage = "Максимальная сумма перевода 10,000 BYN"
+            errorMessage = "Максимальная сумма перевода 10 000 BYN"
             return false
         }
-        
         guard let from = fromAccount, from.availableBalance >= amount else {
             errorMessage = "Недостаточно средств на счете"
             return false
         }
-        
         return true
     }
     
-    // MARK: - Reset
     func reset() {
         fromAccount = nil
         toAccount = nil

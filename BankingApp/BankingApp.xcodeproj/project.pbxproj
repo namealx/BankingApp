@@ -39,7 +39,6 @@
 			membershipExceptions = (
 				"/Localized: Resources/.gitkeep",
 				Info.plist,
-				Views/Profile/.gitkeep,
 			);
 			target = 8488A9C32FC239820048A831 /* BankingApp */;
 		};
