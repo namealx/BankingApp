@@ -12,7 +12,7 @@ import MapKit
 import Combine
 
 // MARK: - BranchViewModel
-final class BranchViewModel: ObservableObject {
+final class BranchViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     // MARK: - Published Properties
     @Published var branches: [Branch] = []
@@ -44,7 +44,8 @@ final class BranchViewModel: ObservableObject {
     }
     
     // MARK: - Init
-    init() {
+    override init() {
+        super.init()
         setupLocationManager()
         loadBranches()
     }
@@ -69,7 +70,7 @@ final class BranchViewModel: ObservableObject {
                     self?.branches = loadedBranches
                     self?.isLoading = false
                     self?.findNearestBranch()
-                    self?.addAnnotationsToMap()
+                    self?.objectWillChange.send()
                 }
             } catch {
                 DispatchQueue.main.async {
@@ -99,11 +100,6 @@ final class BranchViewModel: ObservableObject {
         findNearestBranch()
     }
     
-    // MARK: - Add Annotations to Map
-    private func addAnnotationsToMap() {
-        objectWillChange.send()
-    }
-    
     // MARK: - Open in Maps
     func openInMaps(_ branch: Branch) {
         let coordinate = CLLocationCoordinate2D(latitude: branch.latitude, longitude: branch.longitude)
@@ -113,32 +109,28 @@ final class BranchViewModel: ObservableObject {
         mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving])
     }
     
-    // MARK: - Center Map on Branch
+    // MARK: - Center Map on Branch (без withAnimation)
     func centerMap(on branch: Branch) {
-        withAnimation {
-            mapRegion = MKCoordinateRegion(
-                center: CLLocationCoordinate2D(latitude: branch.latitude, longitude: branch.longitude),
-                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-            )
-        }
+        mapRegion = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: branch.latitude, longitude: branch.longitude),
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        )
         selectedBranch = branch
     }
     
-    // MARK: - Center Map on User Location
+    // MARK: - Center Map on User Location (без withAnimation)
     func centerMapOnUser() {
         if let location = locationManager.location {
-            withAnimation {
-                mapRegion = MKCoordinateRegion(
-                    center: location.coordinate,
-                    span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                )
-            }
+            mapRegion = MKCoordinateRegion(
+                center: location.coordinate,
+                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+            )
         }
     }
 }
 
 // MARK: - CLLocationManagerDelegate
-extension BranchViewModel: CLLocationManagerDelegate {
+extension BranchViewModel {
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         locationAuthorizationStatus = manager.authorizationStatus
