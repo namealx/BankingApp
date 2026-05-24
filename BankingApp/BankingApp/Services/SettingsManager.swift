@@ -10,28 +10,50 @@ import Foundation
 import SwiftUI
 import Combine
 
-// MARK: - SettingsManager
 final class SettingsManager: ObservableObject {
     
-    // MARK: - Singleton
     static let shared = SettingsManager()
     
-    // MARK: - Keys
     private enum Keys {
-        static let currentUserId = "currentUserId"
         static let colorScheme = "colorScheme"
         static let language = "language"
         static let notificationsEnabled = "notificationsEnabled"
         static let notificationTime = "notificationTime"
         static let favoriteCurrencies = "favoriteCurrencies"
+        static let currentUserId = "currentUserId"
     }
     
-    // MARK: - Published Properties
-    @Published var colorScheme: ColorSchemePreference
-    @Published var language: AppLanguage
-    @Published var notificationsEnabled: Bool
-    @Published var notificationTime: Date
-    @Published var favoriteCurrencies: [String]
+    // MARK: - Published Properties с сохранением в UserDefaults
+    @Published var colorScheme: ColorSchemePreference {
+        didSet {
+            UserDefaults.standard.set(colorScheme.rawValue, forKey: Keys.colorScheme)
+        }
+    }
+    
+    @Published var language: AppLanguage {
+        didSet {
+            UserDefaults.standard.set(language.rawValue, forKey: Keys.language)
+            applyLanguage()
+        }
+    }
+    
+    @Published var notificationsEnabled: Bool {
+        didSet {
+            UserDefaults.standard.set(notificationsEnabled, forKey: Keys.notificationsEnabled)
+        }
+    }
+    
+    @Published var notificationTime: Date {
+        didSet {
+            UserDefaults.standard.set(notificationTime, forKey: Keys.notificationTime)
+        }
+    }
+    
+    @Published var favoriteCurrencies: [String] {
+        didSet {
+            UserDefaults.standard.set(favoriteCurrencies, forKey: Keys.favoriteCurrencies)
+        }
+    }
     
     // MARK: - Current User Session
     var currentUserId: Int64? {
@@ -48,16 +70,19 @@ final class SettingsManager: ObservableObject {
         }
     }
     
-    // MARK: - Init
+    // MARK: - Init (загрузка сохраненных настроек)
     private init() {
-        let schemePref = UserDefaults.standard.string(forKey: Keys.colorScheme) ?? ColorSchemePreference.system.rawValue
-        colorScheme = ColorSchemePreference(rawValue: schemePref) ?? .system
+        // Загрузка темы
+        let savedColorScheme = UserDefaults.standard.string(forKey: Keys.colorScheme) ?? ColorSchemePreference.system.rawValue
+        colorScheme = ColorSchemePreference(rawValue: savedColorScheme) ?? .system
         
-        let langPref = UserDefaults.standard.string(forKey: Keys.language) ?? AppLanguage.russian.rawValue
-        language = AppLanguage(rawValue: langPref) ?? .russian
+        // Загрузка языка
+        let savedLanguage = UserDefaults.standard.string(forKey: Keys.language) ?? AppLanguage.russian.rawValue
+        language = AppLanguage(rawValue: savedLanguage) ?? .russian
         
+        // Загрузка уведомлений
         notificationsEnabled = UserDefaults.standard.bool(forKey: Keys.notificationsEnabled)
-        notificationTime = (UserDefaults.standard.object(forKey: Keys.notificationTime) as? Date) ?? Date()
+        notificationTime = UserDefaults.standard.object(forKey: Keys.notificationTime) as? Date ?? Date()
         favoriteCurrencies = UserDefaults.standard.stringArray(forKey: Keys.favoriteCurrencies) ?? ["USD", "EUR"]
     }
     
@@ -66,28 +91,12 @@ final class SettingsManager: ObservableObject {
         currentUserId = nil
     }
     
-    func saveUserSession(userId: Int64) {
-        currentUserId = userId
-    }
-    
     func toggleFavoriteCurrency(_ code: String) {
         if favoriteCurrencies.contains(code) {
             favoriteCurrencies.removeAll { $0 == code }
         } else {
             favoriteCurrencies.append(code)
         }
-        UserDefaults.standard.set(favoriteCurrencies, forKey: Keys.favoriteCurrencies)
-    }
-    
-    func updateNotificationSettings() {
-        UserDefaults.standard.set(notificationsEnabled, forKey: Keys.notificationsEnabled)
-        UserDefaults.standard.set(notificationTime, forKey: Keys.notificationTime)
-    }
-    
-    func updateAppearance() {
-        UserDefaults.standard.set(colorScheme.rawValue, forKey: Keys.colorScheme)
-        UserDefaults.standard.set(language.rawValue, forKey: Keys.language)
-        applyLanguage()
     }
     
     private func applyLanguage() {
@@ -96,10 +105,8 @@ final class SettingsManager: ObservableObject {
     
     func clearCache() {
         URLCache.shared.removeAllCachedResponses()
-        UserDefaults.standard.set(0, forKey: "cacheSize")
     }
     
-    // MARK: - Computed Properties
     var swiftUIColorScheme: ColorScheme? {
         switch colorScheme {
         case .light: return .light
