@@ -1,0 +1,33 @@
+# Xcode
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# User settings
+xcuserdata/
+*.xcuserstate
+*.xcuserdatad
+
+# OS X
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Localization
+*.strings.new
+*.strings.old
+
+# Testing
+TestResults/
+*.xccoverage
