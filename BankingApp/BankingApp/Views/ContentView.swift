@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  BankingApp
 //
-//  Created by Nikita Yuranov on 22.05.2026
+//  Created by Nikita Yuranov on 24.05.2026
 //  Group: 12b
 //
 
@@ -28,4 +28,3 @@ struct ContentView: View {
     ContentView()
         .environmentObject(AuthViewModel())
 }
-
