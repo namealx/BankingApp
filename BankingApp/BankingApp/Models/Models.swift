@@ -107,3 +107,77 @@ enum TransactionType: String, CaseIterable, Codable {
         }
     }
 }
+
+// MARK: - Transaction Model
+struct Transaction: Identifiable, Codable {
+    let id: Int64
+    let accountId: Int64
+    var type: TransactionType
+    var amount: Double
+    var currency: String
+    var description: String
+    var relatedAccountId: Int64?
+    var createdAt: Date
+
+    init(id: Int64 = 0, accountId: Int64, type: TransactionType,
+         amount: Double, currency: String = "BYN", description: String,
+         relatedAccountId: Int64? = nil, createdAt: Date = Date()) {
+        self.id = id
+        self.accountId = accountId
+        self.type = type
+        self.amount = amount
+        self.currency = currency
+        self.description = description
+        self.relatedAccountId = relatedAccountId
+        self.createdAt = createdAt
+    }
+}
+
+// MARK: - Branch Model
+struct Branch: Identifiable, Codable {
+    let id: Int64
+    var name: String
+    var address: String
+    var phone: String
+    var latitude: Double
+    var longitude: Double
+    var workingHours: String
+    var rating: Double
+    var services: [String]
+
+    init(id: Int64 = 0, name: String, address: String, phone: String,
+         latitude: Double, longitude: Double, workingHours: String,
+         rating: Double, services: [String]) {
+        self.id = id
+        self.name = name
+        self.address = address
+        self.phone = phone
+        self.latitude = latitude
+        self.longitude = longitude
+        self.workingHours = workingHours
+        self.rating = rating
+        self.services = services
+    }
+}
+
+// MARK: - Currency Rate Model
+struct CurrencyRate: Identifiable, Codable {
+    let id: String
+    var code: String
+    var name: String
+    var rateToBYN: Double
+    var rateToUSD: Double
+    var changePercent: Double
+    var isFavorite: Bool
+
+    init(code: String, name: String, rateToBYN: Double, rateToUSD: Double,
+         changePercent: Double, isFavorite: Bool = false) {
+        self.id = code
+        self.code = code
+        self.name = name
+        self.rateToBYN = rateToBYN
+        self.rateToUSD = rateToUSD
+        self.changePercent = changePercent
+        self.isFavorite = isFavorite
+    }
+}
