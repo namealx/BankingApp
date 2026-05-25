@@ -23,7 +23,7 @@ final class SettingsManager: ObservableObject {
         static let currentUserId = "currentUserId"
     }
     
-    // MARK: - Published Properties с сохранением в UserDefaults
+    // MARK: - Published Properties
     @Published var colorScheme: ColorSchemePreference {
         didSet {
             UserDefaults.standard.set(colorScheme.rawValue, forKey: Keys.colorScheme)
@@ -70,27 +70,28 @@ final class SettingsManager: ObservableObject {
         }
     }
     
-    // MARK: - Init (загрузка сохраненных настроек)
+    // MARK: - Init
     private init() {
-        // Загрузка темы
         let savedColorScheme = UserDefaults.standard.string(forKey: Keys.colorScheme) ?? ColorSchemePreference.system.rawValue
         colorScheme = ColorSchemePreference(rawValue: savedColorScheme) ?? .system
         
-        // Загрузка языка
         let savedLanguage = UserDefaults.standard.string(forKey: Keys.language) ?? AppLanguage.russian.rawValue
         language = AppLanguage(rawValue: savedLanguage) ?? .russian
         
-        // Загрузка уведомлений
         notificationsEnabled = UserDefaults.standard.bool(forKey: Keys.notificationsEnabled)
         notificationTime = UserDefaults.standard.object(forKey: Keys.notificationTime) as? Date ?? Date()
         favoriteCurrencies = UserDefaults.standard.stringArray(forKey: Keys.favoriteCurrencies) ?? ["USD", "EUR"]
         
-        // Применить язык при старте
         applyLanguage()
     }
     
     // MARK: - Methods
     func logout() {
+        currentUserId = nil
+    }
+    
+    func resetForTesting() {
+        UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
         currentUserId = nil
     }
     
@@ -164,5 +165,6 @@ extension Bundle {
         guard let path = Bundle.main.path(forResource: language, ofType: "lproj"),
               let bundle = Bundle(path: path) else { return }
         LanguageBundle.current = bundle
+        object_setClass(Bundle.main, LanguageBundle.self)
     }
 }

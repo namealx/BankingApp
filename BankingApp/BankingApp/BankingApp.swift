@@ -25,6 +25,12 @@ struct BankingApp: App {
                 .onReceive(NotificationCenter.default.publisher(for: Notification.Name("LanguageChanged"))) { _ in
                     languageVersion += 1
                 }
+                .onAppear {
+                    // Для UI-тестов сбрасываем состояние
+                    if ProcessInfo.processInfo.arguments.contains("--uitesting") {
+                        settings.resetForTesting()
+                    }
+                }
         }
     }
 }
