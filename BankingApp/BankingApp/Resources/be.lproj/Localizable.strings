@@ -1,0 +1,185 @@
+/* App Name */
+"app_name" = "Банкаўскае прыкладанне";
+"login_subtitle" = "Ваш надзейны фінансавы памочнік";
+
+/* Tab Bar */
+"tab_accounts" = "Рахункі";
+"tab_transfer" = "Перавод";
+"tab_currency" = "Курсы";
+"tab_map" = "Мапа";
+"tab_profile" = "Профіль";
+
+/* Auth */
+"login_placeholder" = "Логін";
+"password_placeholder" = "Пароль";
+"login_button" = "Увайсці";
+"register_button" = "Зарэгістравацца";
+"no_account" = "Няма акаўнта? Зарэгістравацца";
+"use_demo" = "Выкарыстаць дэма-акаўнт";
+"register_title" = "Рэгістрацыя";
+"section_personal" = "Асабістая інфармацыя";
+"section_credentials" = "Дадзеныя для ўваходу";
+"full_name_placeholder" = "ПІБ";
+"email_placeholder" = "Email";
+"phone_placeholder" = "Тэлефон";
+"confirm_password_placeholder" = "Пацвердзіце пароль";
+"cancel" = "Адмена";
+
+/* Errors */
+"error_fill_fields" = "Запоўніце ўсе палі";
+"error_invalid_credentials" = "Няправільны логін ці пароль";
+"error_login_exists" = "Карыстальнік з такім логінам ужо існуе";
+"error_invalid_email" = "Няправільны email адрас";
+"error_password_short" = "Пароль павінен утрымліваць мінімум 6 сімвалаў";
+"error_passwords_mismatch" = "Паролі не супадаюць";
+
+/* Accounts */
+"total_balance" = "Агульны баланс";
+"my_accounts" = "Мае рахункі";
+"balance" = "Баланс";
+"available_with_overdraft" = "Даступна з овердрафтам: %.2f BYN";
+"new_account" = "Новы рахунак";
+"create_account" = "Стварыць рахунак";
+"account_info" = "Інфармацыя пра рахунак";
+"account_name" = "Назва рахунку";
+"account_type" = "Тып рахунку";
+"account_type_current" = "Бягучы";
+"account_type_savings" = "Ашчадны";
+"account_type_credit" = "Крэдытны";
+"account_type_card" = "Карта";
+"card_subtype" = "Тып карты";
+"currency" = "Валюта";
+"overdraft" = "Овердрафт: %.0f BYN";
+"status" = "Статус";
+"account_status" = "Статус рахунку";
+"active" = "Актыўны";
+"closed" = "Закрыты";
+"close_account_title" = "Закрыць рахунак";
+"close_account_confirm" = "Вы ўпэўнены, што хочаце закрыць рахунак '%@'?";
+"close" = "Закрыць";
+
+/* Transactions */
+"transactions" = "Аперацыі";
+"filter" = "Фільтр";
+"all" = "Усе";
+"transaction_income" = "Даход";
+"transaction_expense" = "Расход";
+"transaction_transfer" = "Пераказ";
+
+/* Transfer */
+"from_account" = "З рахунку";
+"to_account" = "На рахунак";
+"select_account" = "Абярыце рахунак";
+"select" = "Абраць";
+"amount" = "Сума";
+"transfer_limits" = "Мін: 0.01, Макс: 10,000 BYN";
+"transfer_button" = "Перавесці";
+"transfer_success_title" = "Пераказ выкананы";
+"transfer_to" = "Пераказ на %@";
+"transfer_from" = "Пераказ з %@";
+
+/* Currency */
+"currency_converter" = "Канвертар валют";
+"exchange_rates" = "Курсы валют";
+"from" = "З";
+"to" = "У";
+"convert" = "Канвертаваць";
+"result" = "Вынік";
+"refresh" = "Абнавіць";
+
+/* Map */
+"build_route" = "Пабудаваць маршрут";
+"branches" = "Аддзяленні";
+"search_branch" = "Пошук аддзяленняў...";
+"nearest" = "Бліжэйшае";
+
+/* Profile */
+"account" = "Акаўнт";
+"edit_profile" = "Рэдагаваць профіль";
+"change_password" = "Змяніць пароль";
+"settings_title" = "Налады";
+"logout" = "Выйсці";
+"logout_confirm" = "Вы ўпэўнены, што хочаце выйсці?";
+"edit_profile_title" = "Рэдагаванне профілю";
+"save" = "Захаваць";
+"current_password" = "Бягучы пароль";
+"new_password" = "Новы пароль";
+"app_settings" = "Налады прыкладання";
+"appearance" = "Знешні выгляд";
+"theme" = "Тэма";
+"theme_light" = "Светлая";
+"theme_dark" = "Цёмная";
+"theme_system" = "Сістэмная";
+"language" = "Мова";
+"notifications" = "Паведамленні";
+"enable_notifications" = "Уключыць паведамленні";
+"notification_time" = "Час паведамленняў";
+"storage" = "Сховішча";
+"clear_cache" = "Ачысціць кэш";
+"done" = "Гатова";
+"ok" = "OK";
+
+/* Alerts */
+"success" = "Паспяхова";
+"error" = "Памылка";
+
+/* Additional keys */
+"actions" = "Дзеянні";
+"account_number" = "Нумар рахунку";
+"open_date" = "Дата адкрыцця";
+"no_accounts" = "Няма рахункаў";
+"no_transactions" = "Няма аперацый";
+"transfer_funds" = "Перавесці сродкі";
+"confirm" = "Пацверджанне";
+"are_you_sure" = "Вы ўпэўнены?";
+"cannot_delete_overdraft" = "Немагчыма выдаліць рахунак з адмоўным балансам";
+"balance_format" = "Баланс: %.2f %@";
+"balance_zero" = "Баланс рахунку: 0.00";
+"funds_transfer_note" = "Сродкі будуць перанесены на іншы рахунак";
+"select_transfer_account" = "Абярыце рахунак для пераносу сродкаў";
+"transfer_limits_fmt" = "Ліміты: ад 0.01 да %.2f %@";
+"statistics" = "Статыстыка";
+"total_accounts" = "Усяго рахункаў";
+"active_accounts" = "Актыўных рахункаў";
+"new_password_hint" = "Новы пароль (мін. 6 сімвалаў)";
+"about" = "Пра прыкладанне";
+"version" = "Версія";
+"clear_cache_title" = "Ачыстка кэша";
+"clear_cache_confirm" = "Гэта дзеянне ачысціць кэш прыкладання. Працягнуць?";
+"cache_cleared_title" = "Кэш ачышчаны";
+"cache_cleared_message" = "Кэш прыкладання паспяхова ачышчаны.";
+
+/* Currency names */
+"currency_byn" = "Беларускі рубль";
+"currency_usd" = "Долар ЗША";
+"currency_eur" = "Еўра";
+"currency_rub" = "Расійскі рубль";
+"currency_gbp" = "Фунт стэрлінгаў";
+"currency_cny" = "Кітайскі юань";
+"currency_pln" = "Польскі злоты";
+
+/* Auth errors */
+"error_fill_name" = "Запоўніце поле ПІБ";
+"error_fill_phone" = "Запоўніце поле тэлефона";
+"error_fill_login" = "Запоўніце поле лагіна";
+
+/* Transfer errors */
+"error_select_sender" = "Абярыце рахунак адпраўніка";
+"error_select_receiver" = "Абярыце рахунак атрымальніка";
+"error_same_account" = "Нельга перавесці на той жа рахунак";
+"error_min_amount" = "Мінімальная сума пераказу 0.01 BYN";
+"error_max_amount" = "Максімальная сума пераказу 10 000 BYN";
+"error_insufficient_funds" = "Недастаткова сродкаў на рахунку";
+"transfer_success_message" = "Паспяхова перакінута %@ %@ на рахунак %@";
+
+/* Profile */
+/* Account actions */
+"error_enter_account_name" = "Увядзіце назву рахунку";
+"error_account_not_found" = "Рахунак не знойдзены";
+"account_created" = "Рахунак паспяхова створаны";
+"account_closed" = "Рахунак паспяхова закрыты";
+
+"error_user_not_found" = "Карыстальнік не знойдзены";
+"error_wrong_password" = "Няправільны бягучы пароль";
+"profile_updated" = "Профіль паспяхова абноўлены";
+"password_changed" = "Пароль паспяхова зменены";

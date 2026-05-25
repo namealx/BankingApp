@@ -1,0 +1,185 @@
+/* App Name */
+"app_name" = "Банковское приложение";
+"login_subtitle" = "Ваш надежный финансовый помощник";
+
+/* Tab Bar */
+"tab_accounts" = "Счета";
+"tab_transfer" = "Перевод";
+"tab_currency" = "Курсы";
+"tab_map" = "Карта";
+"tab_profile" = "Профиль";
+
+/* Auth */
+"login_placeholder" = "Логин";
+"password_placeholder" = "Пароль";
+"login_button" = "Войти";
+"register_button" = "Зарегистрироваться";
+"no_account" = "Нет аккаунта? Зарегистрироваться";
+"use_demo" = "Использовать демо-аккаунт";
+"register_title" = "Регистрация";
+"section_personal" = "Личная информация";
+"section_credentials" = "Данные для входа";
+"full_name_placeholder" = "ФИО";
+"email_placeholder" = "Email";
+"phone_placeholder" = "Телефон";
+"confirm_password_placeholder" = "Подтвердите пароль";
+"cancel" = "Отмена";
+
+/* Errors */
+"error_fill_fields" = "Заполните все поля";
+"error_invalid_credentials" = "Неверный логин или пароль";
+"error_login_exists" = "Пользователь с таким логином уже существует";
+"error_invalid_email" = "Неверный email адрес";
+"error_password_short" = "Пароль должен содержать минимум 6 символов";
+"error_passwords_mismatch" = "Пароли не совпадают";
+
+/* Accounts */
+"total_balance" = "Общий баланс";
+"my_accounts" = "Мои счета";
+"balance" = "Баланс";
+"available_with_overdraft" = "Доступно с овердрафтом: %.2f BYN";
+"new_account" = "Новый счет";
+"create_account" = "Создать счет";
+"account_info" = "Информация о счете";
+"account_name" = "Название счета";
+"account_type" = "Тип счета";
+"account_type_current" = "Текущий";
+"account_type_savings" = "Сберегательный";
+"account_type_credit" = "Кредитный";
+"account_type_card" = "Карта";
+"card_subtype" = "Тип карты";
+"currency" = "Валюта";
+"overdraft" = "Овердрафт: %.0f BYN";
+"status" = "Статус";
+"account_status" = "Статус счета";
+"active" = "Активен";
+"closed" = "Закрыт";
+"close_account_title" = "Закрыть счет";
+"close_account_confirm" = "Вы уверены, что хотите закрыть счет '%@'?";
+"close" = "Закрыть";
+
+/* Transactions */
+"transactions" = "Операции";
+"filter" = "Фильтр";
+"all" = "Все";
+"transaction_income" = "Доход";
+"transaction_expense" = "Расход";
+"transaction_transfer" = "Перевод";
+
+/* Transfer */
+"from_account" = "Со счета";
+"to_account" = "На счет";
+"select_account" = "Выберите счет";
+"select" = "Выбрать";
+"amount" = "Сумма";
+"transfer_limits" = "Мин: 0.01, Макс: 10,000 BYN";
+"transfer_button" = "Перевести";
+"transfer_success_title" = "Перевод выполнен";
+"transfer_to" = "Перевод на %@";
+"transfer_from" = "Перевод с %@";
+
+/* Currency */
+"currency_converter" = "Конвертер валют";
+"exchange_rates" = "Курсы валют";
+"from" = "Из";
+"to" = "В";
+"convert" = "Конвертировать";
+"result" = "Результат";
+"refresh" = "Обновить";
+
+/* Map */
+"build_route" = "Построить маршрут";
+"branches" = "Отделения";
+"search_branch" = "Поиск отделений...";
+"nearest" = "Ближайшее";
+
+/* Profile */
+"account" = "Аккаунт";
+"edit_profile" = "Редактировать профиль";
+"change_password" = "Изменить пароль";
+"settings_title" = "Настройки";
+"logout" = "Выйти";
+"logout_confirm" = "Вы уверены, что хотите выйти?";
+"edit_profile_title" = "Редактирование профиля";
+"save" = "Сохранить";
+"current_password" = "Текущий пароль";
+"new_password" = "Новый пароль";
+"app_settings" = "Настройки приложения";
+"appearance" = "Внешний вид";
+"theme" = "Тема";
+"theme_light" = "Светлая";
+"theme_dark" = "Темная";
+"theme_system" = "Системная";
+"language" = "Язык";
+"notifications" = "Уведомления";
+"enable_notifications" = "Включить уведомления";
+"notification_time" = "Время уведомлений";
+"storage" = "Хранилище";
+"clear_cache" = "Очистить кэш";
+"done" = "Готово";
+"ok" = "OK";
+
+/* Alerts */
+"success" = "Успешно";
+"error" = "Ошибка";
+
+/* Additional keys */
+"actions" = "Действия";
+"account_number" = "Номер счета";
+"open_date" = "Дата открытия";
+"no_accounts" = "Нет счетов";
+"no_transactions" = "Нет операций";
+"transfer_funds" = "Перевести средства";
+"confirm" = "Подтверждение";
+"are_you_sure" = "Вы уверены?";
+"cannot_delete_overdraft" = "Невозможно удалить счет с отрицательным балансом";
+"balance_format" = "Баланс: %.2f %@";
+"balance_zero" = "Баланс счета: 0.00";
+"funds_transfer_note" = "Средства будут перенесены на другой счет";
+"select_transfer_account" = "Выберите счет для переноса средств";
+"transfer_limits_fmt" = "Лимиты: от 0.01 до %.2f %@";
+"statistics" = "Статистика";
+"total_accounts" = "Всего счетов";
+"active_accounts" = "Активных счетов";
+"new_password_hint" = "Новый пароль (мин. 6 символов)";
+"about" = "О приложении";
+"version" = "Версия";
+"clear_cache_title" = "Очистка кэша";
+"clear_cache_confirm" = "Это действие очистит кэш приложения. Продолжить?";
+"cache_cleared_title" = "Кэш очищен";
+"cache_cleared_message" = "Кэш приложения успешно очищен.";
+
+/* Currency names */
+"currency_byn" = "Белорусский рубль";
+"currency_usd" = "Доллар США";
+"currency_eur" = "Евро";
+"currency_rub" = "Российский рубль";
+"currency_gbp" = "Фунт стерлингов";
+"currency_cny" = "Китайский юань";
+"currency_pln" = "Польский злотый";
+
+/* Auth errors */
+"error_fill_name" = "Заполните поле ФИО";
+"error_fill_phone" = "Заполните поле телефона";
+"error_fill_login" = "Заполните поле логина";
+
+/* Transfer errors */
+"error_select_sender" = "Выберите счет отправителя";
+"error_select_receiver" = "Выберите счет получателя";
+"error_same_account" = "Нельзя перевести на тот же счет";
+"error_min_amount" = "Минимальная сумма перевода 0.01 BYN";
+"error_max_amount" = "Максимальная сумма перевода 10 000 BYN";
+"error_insufficient_funds" = "Недостаточно средств на счете";
+"transfer_success_message" = "Успешно переведено %@ %@ на счет %@";
+
+/* Account actions */
+"error_enter_account_name" = "Введите название счета";
+"error_account_not_found" = "Счет не найден";
+"account_created" = "Счет успешно создан";
+"account_closed" = "Счет успешно закрыт";
+
+/* Profile */
+"error_user_not_found" = "Пользователь не найден";
+"error_wrong_password" = "Неверный текущий пароль";
+"profile_updated" = "Профиль успешно обновлен";
+"password_changed" = "Пароль успешно изменен";

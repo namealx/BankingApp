@@ -1,0 +1,186 @@
+/* App Name */
+"app_name" = "BankingApp";
+"login_subtitle" = "Your reliable financial assistant";
+
+/* Tab Bar */
+"tab_accounts" = "Accounts";
+"tab_transfer" = "Transfer";
+"tab_currency" = "Currency";
+"tab_map" = "Map";
+"tab_profile" = "Profile";
+
+/* Auth */
+"login_placeholder" = "Username";
+"password_placeholder" = "Password";
+"login_button" = "Login";
+"register_button" = "Register";
+"no_account" = "Don't have an account? Register";
+"use_demo" = "Use demo account";
+"register_title" = "Registration";
+"section_personal" = "Personal Information";
+"section_credentials" = "Credentials";
+"full_name_placeholder" = "Full Name";
+"email_placeholder" = "Email";
+"phone_placeholder" = "Phone";
+"confirm_password_placeholder" = "Confirm Password";
+"cancel" = "Cancel";
+
+/* Errors */
+"error_fill_fields" = "Please fill in all fields";
+"error_invalid_credentials" = "Invalid username or password";
+"error_login_exists" = "User with this login already exists";
+"error_invalid_email" = "Invalid email address";
+"error_password_short" = "Password must be at least 6 characters";
+"error_passwords_mismatch" = "Passwords do not match";
+
+/* Accounts */
+"total_balance" = "Total Balance";
+"my_accounts" = "My Accounts";
+"balance" = "Balance";
+"available_with_overdraft" = "Available with overdraft: %.2f BYN";
+"new_account" = "New Account";
+"create_account" = "Create Account";
+"account_info" = "Account Information";
+"account_name" = "Account Name";
+"account_type" = "Account Type";
+"account_type_current" = "Current";
+"account_type_savings" = "Savings";
+"account_type_credit" = "Credit";
+"account_type_card" = "Card";
+"card_subtype" = "Card Type";
+"currency" = "Currency";
+"overdraft" = "Overdraft: %.0f BYN";
+"status" = "Status";
+"account_status" = "Account Status";
+"active" = "Active";
+"closed" = "Closed";
+"close_account_title" = "Close Account";
+"close_account_confirm" = "Are you sure you want to close account '%@'?";
+"close" = "Close";
+
+/* Transactions */
+"transactions" = "Transactions";
+"filter" = "Filter";
+"all" = "All";
+"transaction_income" = "Income";
+"transaction_expense" = "Expense";
+"transaction_transfer" = "Transfer";
+
+/* Transfer */
+"from_account" = "From Account";
+"to_account" = "To Account";
+"select_account" = "Select account";
+"select" = "Select";
+"amount" = "Amount";
+"transfer_limits" = "Min: 0.01, Max: 10,000 BYN";
+"transfer_button" = "Transfer";
+"transfer_success_title" = "Transfer Complete";
+"transfer_to" = "Transfer to %@";
+"transfer_from" = "Transfer from %@";
+
+/* Currency */
+"currency_converter" = "Currency Converter";
+"exchange_rates" = "Exchange Rates";
+"from" = "From";
+"to" = "To";
+"convert" = "Convert";
+"result" = "Result";
+"refresh" = "Refresh";
+
+/* Map */
+"build_route" = "Build Route";
+"branches" = "Branches";
+"search_branch" = "Search branches...";
+"nearest" = "Nearest";
+
+/* Profile */
+"account" = "Account";
+"edit_profile" = "Edit Profile";
+"change_password" = "Change Password";
+"settings_title" = "Settings";
+"logout" = "Logout";
+"logout_confirm" = "Are you sure you want to logout?";
+"edit_profile_title" = "Edit Profile";
+"save" = "Save";
+"current_password" = "Current Password";
+"new_password" = "New Password";
+"app_settings" = "App Settings";
+"appearance" = "Appearance";
+"theme" = "Theme";
+"theme_light" = "Light";
+"theme_dark" = "Dark";
+"theme_system" = "System";
+"language" = "Language";
+"notifications" = "Notifications";
+"enable_notifications" = "Enable Notifications";
+"notification_time" = "Notification Time";
+"storage" = "Storage";
+"clear_cache" = "Clear Cache";
+"done" = "Done";
+"ok" = "OK";
+
+/* Alerts */
+"success" = "Success";
+"error" = "Error";
+
+/* Additional keys */
+"actions" = "Actions";
+"account_number" = "Account Number";
+"open_date" = "Open Date";
+"no_accounts" = "No accounts";
+"no_transactions" = "No transactions";
+"transfer_funds" = "Transfer Funds";
+"actions" = "Actions";
+"confirm" = "Confirmation";
+"are_you_sure" = "Are you sure?";
+"cannot_delete_overdraft" = "Cannot delete account with negative balance";
+"balance_format" = "Balance: %.2f %@";
+"balance_zero" = "Account balance: 0.00";
+"funds_transfer_note" = "Funds will be transferred to another account";
+"select_transfer_account" = "Select account to transfer funds";
+"transfer_limits_fmt" = "Min: 0.01, Max: %.2f %@";
+"statistics" = "Statistics";
+"total_accounts" = "Total Accounts";
+"active_accounts" = "Active Accounts";
+"new_password_hint" = "New Password (min. 6 characters)";
+"about" = "About";
+"version" = "Version";
+"clear_cache_title" = "Clear Cache";
+"clear_cache_confirm" = "This will clear the app cache. Continue?";
+"cache_cleared_title" = "Cache Cleared";
+"cache_cleared_message" = "App cache has been successfully cleared.";
+
+/* Currency names */
+"currency_byn" = "Belarusian Ruble";
+"currency_usd" = "US Dollar";
+"currency_eur" = "Euro";
+"currency_rub" = "Russian Ruble";
+"currency_gbp" = "British Pound";
+"currency_cny" = "Chinese Yuan";
+"currency_pln" = "Polish Zloty";
+
+/* Auth errors */
+"error_fill_name" = "Please fill in your full name";
+"error_fill_phone" = "Please fill in your phone number";
+"error_fill_login" = "Please fill in your login";
+
+/* Transfer errors */
+"error_select_sender" = "Please select a sender account";
+"error_select_receiver" = "Please select a receiver account";
+"error_same_account" = "Cannot transfer to the same account";
+"error_min_amount" = "Minimum transfer amount is 0.01 BYN";
+"error_max_amount" = "Maximum transfer amount is 10,000 BYN";
+"error_insufficient_funds" = "Insufficient funds";
+"transfer_success_message" = "Successfully transferred %@ %@ to account %@";
+
+/* Account actions */
+"error_enter_account_name" = "Please enter an account name";
+"error_account_not_found" = "Account not found";
+"account_created" = "Account created successfully";
+"account_closed" = "Account closed successfully";
+
+/* Profile */
+"error_user_not_found" = "User not found";
+"error_wrong_password" = "Incorrect current password";
+"profile_updated" = "Profile updated successfully";
+"password_changed" = "Password changed successfully";
