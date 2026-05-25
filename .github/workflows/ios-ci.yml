@@ -10,6 +10,8 @@ jobs:
   build-and-test:
     name: Build and Test
     runs-on: macos-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout code
@@ -17,7 +19,7 @@ jobs:
 
       - name: Select Xcode
         run: sudo xcode-select -switch /Applications/Xcode_16.3.app
-      
+
       - name: Show Xcode version
         run: xcodebuild -version
 
@@ -35,10 +37,12 @@ jobs:
       - name: Build and Test
         run: |
           xcodebuild test \
+            -project BankingApp/BankingApp.xcodeproj \
             -scheme BankingApp \
             -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.4' \
             -resultBundlePath TestResults \
             -enableCodeCoverage YES \
+            CODE_SIGNING_ALLOWED=NO \
             2>&1 | xcpretty
 
       - name: Upload test results
@@ -52,13 +56,16 @@ jobs:
         uses: codecov/codecov-action@v5
         if: always()
         with:
-          file: ./TestResults/CodeCoverage.xccoverage
+          files: ./TestResults/CodeCoverage.xccoverage
           fail_ci_if_error: false
 
       - name: Build for production
         if: github.ref == 'refs/heads/main'
         run: |
           xcodebuild build \
+            -project BankingApp/BankingApp.xcodeproj \
             -scheme BankingApp \
-            -destination 'generic/platform=iOS' \
-            -configuration Release
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.4' \
+            -configuration Release \
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | xcpretty
