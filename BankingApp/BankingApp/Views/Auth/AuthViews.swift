@@ -40,6 +40,7 @@ struct LoginView: View {
                     
                     SecureField("password_placeholder".localized, text: $authVM.password)
                         .textFieldStyle(.roundedBorder)
+                        .textContentType(.oneTimeCode)
                         .disabled(authVM.isLoading)
                         .accessibilityIdentifier("passwordField")
                     

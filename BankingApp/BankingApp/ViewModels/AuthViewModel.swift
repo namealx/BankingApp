@@ -30,6 +30,14 @@ final class AuthViewModel: ObservableObject {
     
     // MARK: - Init
     init() {
+        // Проверяем, запущены ли UI-тесты
+        if ProcessInfo.processInfo.arguments.contains("--uitesting") {
+            // Для тестов: принудительно выходим из аккаунта
+            settings.logout()
+            currentUser = nil
+            isLoggedIn = false
+            return
+        }
         checkAutoLogin()
     }
     
